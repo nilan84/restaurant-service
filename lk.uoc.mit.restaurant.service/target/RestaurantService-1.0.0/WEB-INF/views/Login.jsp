@@ -8,11 +8,15 @@ $(document).ready(function() {
                document.getElementById("message").style.visibility = 'hidden';
 			var username = $('#username').val();
 			var passward = $('#passward').val();
-			alert( username );
 			var data = 'username='
 					+ encodeURIComponent(username)
-					+ '&amp;passward='
+					+ '&passward='
 					+ encodeURIComponent(passward);
+		    if(!username){
+		       document.getElementById("message").style.visibility = 'visible';
+               message.innerHTML = "Please enter username and password !" ;
+		    }
+		    else{
 			$.ajax({
 				url : $("#sampleForm").attr("action"),
 				data : data,
@@ -20,6 +24,9 @@ $(document).ready(function() {
 
 				success : function(response) {
 					alert( response );
+					$('#login').hide();
+					location.reload();
+
 				},
 				error : function(xhr, status, error) {
 				   document.getElementById("message").style.visibility = 'visible';
@@ -27,6 +34,7 @@ $(document).ready(function() {
 
 				}
 			});
+			}
 			return false;
 		});
 	});
@@ -55,7 +63,7 @@ $(document).ready(function() {
         </div>
 
             <div class="col-md-7" style="border-left:1px solid #ccc;height:160px">
-        <form class="form-horizontal" id="sampleForm"  action="/profile" >
+        <form class="form-horizontal" id="sampleForm"  action="profile" >
         <fieldset>
 
           <input id="username" name="textinput" type="text" placeholder="Enter User Name" class="form-control input-md">

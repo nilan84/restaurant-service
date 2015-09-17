@@ -2,6 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,9 +65,19 @@
     <li><a  href="activeorder"><img src="resources/image/order.jpg" class="img-rounded" alt="Cinque Terre" width="60" height="60">Order Food</a></li>
     <li class="active"><a  href="order"><img src="resources/image/OrderStatus.jpg" class="img-rounded" alt="Cinque Terre" width="60" height="60">View Order</a></li>
     <li><a  href="admin"><img src="resources/image/admin.jpg" class="img-rounded" alt="Cinque Terre" width="60" height="60">Admin</a></li>
-        <div align="right">
-         <a href="#" data-toggle="modal" data-target="#login" ><img src="resources/image/user_login-icon.gif" title="Describe Image Link Destination" width="60" height="60" />Login</a>
-       </div>
+         <div align="right">
+                      <c:choose>
+                      <c:when test="${not empty username}">
+                      <a href="logout" ><img src="resources/image/user_login-icon.gif" title="Describe Image Link Destination" width="60" height="60" />
+                      Hi <c:out value="${username}"></c:out> </a>
+                      </c:when>
+                      <c:otherwise>
+                      <a href="#" data-toggle="modal" data-target="#login" ><img src="resources/image/user_login-icon.gif" title="Describe Image Link Destination" width="60" height="60" />
+                        Login </a>
+                      </c:otherwise>
+                    </c:choose>
+                    </a>
+                  </div>
   </ul>
 
   <div class="tab-content">

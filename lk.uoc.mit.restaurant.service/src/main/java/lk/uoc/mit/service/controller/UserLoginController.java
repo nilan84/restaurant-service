@@ -26,11 +26,19 @@ public class UserLoginController {
     public @ResponseBody
     String processAJAXRequest(
             @RequestParam("username") String firstname,
-            @RequestParam("passward") String lastname	) {
+            @RequestParam("passward") String lastname,HttpSession httpSession) {
         String response = "Login ok";
+        httpSession.setAttribute("username","nilan");
         // Process the request
         // Prepare the response string
         return response;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession httpSession) {
+        String response = "Logout Done";
+        httpSession.invalidate();
+        return "Home";
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
