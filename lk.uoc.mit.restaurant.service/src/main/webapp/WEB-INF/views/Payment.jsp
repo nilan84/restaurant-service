@@ -59,8 +59,8 @@
 
                       <tr>
                         <td><c:out value="${order.orderNo}"/></td>
-                        <td></td>
-                       <td></td>
+                        <td><c:out value="${order.customer.customerName}"/></td>
+                       <td><c:out value="${order.orderAmount}"/></td>
                        <td> <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Pay</button></td>
 
                          </tr>

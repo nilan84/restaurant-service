@@ -1,6 +1,9 @@
 package lk.uoc.mit.service.controller;
 
+import lk.uoc.mit.restaurant.mysql.config.UserType;
+import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.Employee;
+import lk.uoc.mit.restaurant.mysql.service.CustomerDAOService;
 import lk.uoc.mit.restaurant.mysql.service.EmployeeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,9 @@ public class UserLoginController {
     @Autowired
     EmployeeDAOService employeeDAOService;
 
+    @Autowired
+    CustomerDAOService customerDAOService;
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public @ResponseBody
     String processAJAXRequest(
@@ -31,6 +37,23 @@ public class UserLoginController {
         httpSession.setAttribute("username","nilan");
         // Process the request
         // Prepare the response string
+      /*  GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                .setAudience(Arrays.asList("593062383989-m01qcr5b11s0oh4mdae2d5jbikpkig5v.apps.googleusercontent.com"))
+                .build();
+
+        GoogleIdToken idToken = verifier.verify(idTokenString);
+        if (idToken != null) {
+            Payload payload = idToken.getPayload();
+            if (payload.getHostedDomain().equals(APPS_DOMAIN_NAME)
+                    // If multiple clients access the backend server:
+                    && Arrays.asList(ANDROID_CLIENT_ID, IOS_CLIENT_ID).contains(payload.getAuthorizedParty())) {
+                System.out.println("User ID: " + payload.getSubject());
+            } else {
+                System.out.println("Invalid ID token.");
+            }
+        } else {
+            System.out.println("Invalid ID token.");
+        }*/
         return response;
     }
 
@@ -53,6 +76,17 @@ public class UserLoginController {
         return "Home";
     }
 
+    @RequestMapping(value = "/apphome", method = RequestMethod.GET)
+    public String androidAppHome(Model model,@RequestParam("cusname") String cusname,@RequestParam("mac") String mac,HttpSession session) {
+        Customer customer=customerDAOService.getCustomerByMAC(mac);
+      if(customer!=null){
+            session.setAttribute("username", customer.getCustomerName());
+            session.setAttribute("mac",mac);
+            session.setAttribute("customer_Id",customer.getCustomerId());
+            session.setAttribute("UserType",UserType.Mobile);}
+        return "Home";
+    }
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String redirectAdmin() {
         return "redirect:adminpage";
@@ -64,16 +98,7 @@ public class UserLoginController {
         return "Admin";
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String redirectUser() {
-        return "redirect:userpage";
-    }
 
-    @RequestMapping(value = "/userpage", method = RequestMethod.GET)
-    public String userPage(Model model) {
-        model.addAttribute("users", "abc");
-        return "admin/User";
-    }
 
     @RequestMapping(value = "/employee", method = RequestMethod.GET)
     public String redirectEmployee() {

@@ -1,7 +1,7 @@
 package lk.uoc.mit.restaurant.mysql.service;
 
 import lk.uoc.mit.restaurant.mysql.model.Location;
-import lk.uoc.mit.restaurant.mysql.model.User;
+import lk.uoc.mit.restaurant.mysql.model.Restaurant;
 
 import java.util.List;
 
@@ -10,6 +10,9 @@ import java.util.List;
  */
 public interface RestaurantDAOService {
     
-    public List<User> getRestaurant();
+    public List<Restaurant> getRestaurant();
     public long addLocation(Location location);
+    public void editRestaurant(Restaurant restaurant);
+    public Restaurant getRestaurantById(int restId);
+
 }

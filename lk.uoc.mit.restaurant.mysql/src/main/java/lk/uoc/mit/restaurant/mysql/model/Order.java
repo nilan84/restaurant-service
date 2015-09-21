@@ -1,5 +1,7 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
+import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +15,24 @@ public class Order implements Serializable {
     private List<OrderFood> orderFoodList;
     private Customer customer;
     private String description;
+    private OrderStatus orderStatus;
+    private double orderAmount;
+
+    public double getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(double orderAmount) {
+        this.orderAmount = orderAmount;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
     public String getDescription() {
         return description;

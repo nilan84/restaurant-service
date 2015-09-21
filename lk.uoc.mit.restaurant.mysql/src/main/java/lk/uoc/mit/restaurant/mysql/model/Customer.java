@@ -1,10 +1,12 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
+import java.io.Serializable;
+
 /**
  * Created by nilan on 9/4/15.
  */
-public class Customer {
-
+public class Customer implements Serializable {
+    private static final long serialVersionUID = -7788619177798333712L;
 
     private String customerName;
     private int customerId;

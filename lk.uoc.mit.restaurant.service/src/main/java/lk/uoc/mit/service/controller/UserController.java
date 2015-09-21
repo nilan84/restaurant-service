@@ -1,0 +1,69 @@
+package lk.uoc.mit.service.controller;
+
+import lk.uoc.mit.restaurant.mysql.config.UserType;
+import lk.uoc.mit.restaurant.mysql.model.User;
+import lk.uoc.mit.restaurant.mysql.service.UserDAOService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * Created by nilan on 9/20/15.
+ */
+
+@Controller
+public class UserController {
+
+    @Autowired
+    UserDAOService userDAOService;
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String redirectUser() {
+        return "redirect:userpage";
+    }
+
+    @RequestMapping(value = "/userpage", method = RequestMethod.GET)
+    public String userPage(Model model) {
+        List<User> userList=userDAOService.getAllUser();
+        model.addAttribute("users", userList);
+        return "admin/User";
+    }
+
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST)
+    public String addUser(@ModelAttribute("user") @Valid User user,Model model) {
+        userDAOService.addUser(user);
+        List<User> userList=userDAOService.getAllUser();
+        model.addAttribute("users", userList);
+        return "admin/User";
+    }
+
+    @RequestMapping(value = "/edituser", method = RequestMethod.POST)
+    public String editUser(@ModelAttribute("user") @Valid User user,Model model) {
+        userDAOService.editUser(user);
+        List<User> userList=userDAOService.getAllUser();
+        model.addAttribute("users", userList);
+        return "admin/User";
+    }
+
+    @RequestMapping(value = "/edituserview", method = RequestMethod.GET)
+    public String editUserView(@RequestParam("userid") Integer userid,@ModelAttribute("user") @Valid User user,Model model) {
+        User userObject=userDAOService.getUserById(userid);
+        model.addAttribute("enumValues", UserType.values());
+        model.addAttribute("user", userObject);
+        return "admin/EditUser";
+    }
+
+    @RequestMapping(value = "/adduserview", method = RequestMethod.GET)
+    public String addUserView(@ModelAttribute("user") @Valid User user,Model model) {
+        model.addAttribute("enumValues", UserType.values());
+        return "admin/AddUser";
+    }
+
+}

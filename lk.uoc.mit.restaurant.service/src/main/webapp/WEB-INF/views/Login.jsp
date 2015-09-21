@@ -1,3 +1,5 @@
+  <meta name="google-signin-client_id" content="593062383989-m01qcr5b11s0oh4mdae2d5jbikpkig5v.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
 $(document).ready(function() {
 	$('#sampleForm').submit(
@@ -39,7 +41,51 @@ $(document).ready(function() {
 		});
 	});
 
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail());
+  var id_token = googleUser.getAuthResponse().id_token;
+console.log(id_token);
+			var data = 'username='
+					+ encodeURIComponent(profile.getName())
+					+ '&passward='
+					+ encodeURIComponent(profile.getName());
+
+singInsystem(data);
+
+}
+function singInsystem(data){
+$.ajax({
+				url : "profile",
+				data : data,
+				type : "GET",
+
+				success : function(response) {
+				     document.getElementById("message").style.visibility = 'hidden';
+				     return false;
+
+				},
+				error : function(xhr, status, error) {
+				   document.getElementById("message").style.visibility = 'visible';
+				    message.innerHTML = "Password or username incorrect!" ;
+
+				}
+			});
+}
+
+ function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+
 </script>
+
 
 <div class="modal fade" id="login" role="dialog"  aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -57,9 +103,9 @@ $(document).ready(function() {
           <div class="row" >
 
         <div class="col-md-5" >
-        <a href="#"><img src="http://techulus.com/buttons/fb.png" /></a><br/>
-        <a href="#"><img src="http://techulus.com/buttons/tw.png" /></a><br/>
-        <a href="#"><img src="http://techulus.com/buttons/gplus.png" /></a>
+
+              <div class="g-signin2" data-onsuccess="onSignIn" ></div>
+
         </div>
 
             <div class="col-md-7" style="border-left:1px solid #ccc;height:160px">

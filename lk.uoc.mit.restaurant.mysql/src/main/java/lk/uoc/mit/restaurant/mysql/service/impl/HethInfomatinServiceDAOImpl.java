@@ -32,6 +32,7 @@ public class HethInfomatinServiceDAOImpl implements HethInfomationDAOService {
             helthInformation.setPrice(Double.parseDouble(row.get("Food_Price").toString()));
             helthInformation.setBarCode(row.get("FoodscanCode").toString());
             helthInformation.setFoodItemName(row.get("Food_item_name").toString());
+            helthInformation.setFoodNo(Integer.parseInt(row.get("Food_Item_id").toString()));
         }
 
         return helthInformation;

@@ -14,6 +14,15 @@ public class HelthInformation implements Serializable {
     private String discription;
     private double price;
     private String foodItemName;
+    private int foodNo;
+
+    public int getFoodNo() {
+        return foodNo;
+    }
+
+    public void setFoodNo(int foodNo) {
+        this.foodNo = foodNo;
+    }
 
     public String getBarCode() {
         return barCode;

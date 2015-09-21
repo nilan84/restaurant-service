@@ -1,15 +1,27 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
+import java.io.Serializable;
+
 /**
  * Created by nilan on 9/4/15.
  */
-public class OrderFood {
+public class OrderFood implements Serializable {
+    private static final long serialVersionUID = -7788619177798333712L;
     private Food food;
     private double unitPrice;
     private int noOfitem;
     private long orderNo;
     private String description;
     private int foodId;
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public int getFoodId() {
         return foodId;

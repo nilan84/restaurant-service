@@ -13,4 +13,5 @@ public interface CustomerDAOService {
     public long addCustomer(Customer customer);
     public long editCustomer(Customer customer);
     public Customer getCustomerById(int customerId);
+    public Customer getCustomerByMAC(String macAddress);
 }

@@ -21,7 +21,7 @@ public class Food implements Serializable {
     private double foodPrice;
     @Size(min = 6, max = 15, message="Food Description must be at least 6 characters")
     private String foodDiscription;
-    @Size(min = 6, max = 255, message="Food Scan Code must be at least 6 characters")
+    @Size(min = 3, max = 255, message="Food Scan Code must be at least 6 characters")
     private String foodscanCode;
     private int foodNo;
 

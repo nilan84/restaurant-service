@@ -1,6 +1,8 @@
 package lk.uoc.mit.restaurant.mysql.service.impl;
 
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
+import lk.uoc.mit.restaurant.mysql.config.UserType;
+import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.Food;
 import lk.uoc.mit.restaurant.mysql.model.Order;
 import lk.uoc.mit.restaurant.mysql.model.OrderFood;
@@ -13,6 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +37,8 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     private DataSource dataSource;
     @Autowired
     private PaymetDAOService paymentDAOService;
+    @Autowired
+    private HttpSession httpSession;
 
     public FoodDAOServiceImpl() {
     }
@@ -59,8 +64,13 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
     @Override
     public List<Order> getAllActiveOrder() {
-
-        String sql = "SELECT * FROM Order_master,customer where Order_master.customer_Id=customer.customer_id and status='"+OrderStatus.Confirm.ordinal()+"'";
+        String sql="";
+        Customer customer=new Customer();
+        if(httpSession.getAttribute("UserType")==UserType.Mobile) {
+             sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id='"+httpSession.getAttribute("customer_Id")+"' and Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Confirm.ordinal() + "'";
+        }else{
+            sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Confirm.ordinal() + "'";
+        }
         List<Order> orders = new ArrayList<Order>();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -68,7 +78,11 @@ public class FoodDAOServiceImpl implements FoodDAOService {
             Order order=new Order();
             order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
             order.setDescription(row.get("Description").toString());
-           // order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+            order.setOrderStatus(OrderStatus.values()[Integer.parseInt(row.get("status").toString())]);
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerEmail(row.get("email").toString());
+            order.setCustomer(customer);
+            order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
             orders.add(order);
         }
 

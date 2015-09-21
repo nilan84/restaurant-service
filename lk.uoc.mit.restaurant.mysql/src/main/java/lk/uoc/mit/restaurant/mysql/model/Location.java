@@ -12,6 +12,15 @@ public class Location implements Serializable {
     private String latitude;
     private String longitude;
     private String mac;
+    private String orderNo;
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
 
     public String getLatitude() {
         return latitude;

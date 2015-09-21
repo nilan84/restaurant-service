@@ -1,5 +1,7 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
+import lk.uoc.mit.restaurant.mysql.config.UserType;
+
 /**
  * Created by nilan on 8/1/15.
  */
@@ -9,6 +11,33 @@ public class User {
     private String lastName;
     private String gender;
     private String city;
+    private String username;
+    private String passward;
+    private UserType userType;
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassward() {
+        return passward;
+    }
+
+    public void setPassward(String passward) {
+        this.passward = passward;
+    }
 
     public int getUserId() {
         return userId;
