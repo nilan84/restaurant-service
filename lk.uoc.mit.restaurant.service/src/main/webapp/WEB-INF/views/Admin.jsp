@@ -52,12 +52,13 @@
    </div>
  </ul>
   <ul class="nav nav-pills">
-      <li ><a href="#home">Customer</a></li>
+      <li ><a href="customer">Customer</a></li>
       <li ><a href="user">User</a></li>
       <li><a href="addfood">Food</a></li>
-      <li><a href="addfood">Restaurant</a></li>
+      <li><a href="restaurant">Restaurant</a></li>
       <li><a href="employee">Employee</a></li>
-      <li><a href="employee">Report</a></li>
+      <li><a href="viewallorder?date=2015-09-24">View Order</a></li>
+      <li><a href="report">Report</a></li>
     </ul>
 
 <%@ include file="Login.jsp" %>

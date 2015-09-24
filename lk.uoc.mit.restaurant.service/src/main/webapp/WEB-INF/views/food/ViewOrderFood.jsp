@@ -23,7 +23,7 @@
                 <tr>
                   <td><c:out value="${order.orderNo}"/></td>
                   <td><c:out value="${order.description}"/></td>
-                  <td> <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'fooditemadd';" >Edit Order</button></td>
+                  <td> <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'editfood?orderno=${order.orderNo}';" >Edit Order</button></td>
                 </tr>
 
 

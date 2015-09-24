@@ -39,7 +39,7 @@ $(document).on("click", ".open-Dialog", function () {
 
               <th><c:out value="${food.foodName}"/></th>
               <th><c:out value="${food.foodPrice}"/></th>
-                <th><img src="resources/image/food/${food.foodNo}.jpg" width="50" height="50"/></th>
+                <th><img src="resources/food/${food.foodNo}.jpg" width="100" height="100"/></th>
              <th> <button type="button" class="open-Dialog btn btn-info btn-md" data-toggle="modal" data-id="${food.foodNo}" data-price="${food.foodPrice}" data-target="#myModal">Add</button></th>
             </tr>
 

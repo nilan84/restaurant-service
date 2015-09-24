@@ -15,13 +15,13 @@ public class Food implements Serializable {
 
     private FoodL2 foodL2;
 
-    @Size(min = 6, max = 15, message="Food Name must be at least 6 characters")
+    @Size(min = 3, max = 255, message="Food Name must be at least 3 characters")
     private String foodName;
 
     private double foodPrice;
-    @Size(min = 6, max = 15, message="Food Description must be at least 6 characters")
+    @Size(min = 2, max = 500, message="Food Description must be between 2 and 500 characters")
     private String foodDiscription;
-    @Size(min = 3, max = 255, message="Food Scan Code must be at least 6 characters")
+    @Size(min = 2, max = 255, message="Food Scan Code must be between 2 and 255 characters")
     private String foodscanCode;
     private int foodNo;
 

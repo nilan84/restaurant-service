@@ -12,6 +12,7 @@
 <h4>Edit Employee</h4>
 
   <form:form method="POST"  enctype="multipart/form-data" action="editemployee" class="form-horizontal" id="contactForm"  commandName="employee">
+   <form:hidden path="empId" class="form-control" />
                      <div class="form-group">
                                                       <form:label path="empName" class="control-label col-sm-2">Employee Name</form:label>
                                                         <div class="col-sm-4">
@@ -20,7 +21,7 @@
                                                        <form:errors path="empName" cssClass="error"/>
                                                      </div>  </div>
                                                     <div class="form-group">
-                                                       <form:label path="email" class="control-label col-sm-2">Employee enail</form:label>
+                                                       <form:label path="email" class="control-label col-sm-2">Employee email</form:label>
                                                         <div class="col-sm-4">
                                                         <form:input path="email" class="form-control"  />
                                                         </div><div class="col-sm-4">

@@ -16,14 +16,14 @@
                                  <div class="form-group">
                                   <form:label path="foodName" class="control-label col-sm-2">Food Name</form:label>
                                     <div class="col-sm-4">
-                                    <form:input path="foodName" class="form-control" value="${foodItem.foodName}" />
+                                    <form:input path="foodName" class="form-control" />
                                      </div><div class="col-sm-4">
                                    <form:errors path="foodName" cssClass="error"/>
                                  </div>  </div>
                                 <div class="form-group">
                                    <form:label path="foodscanCode" class="control-label col-sm-2">Food Scan Code</form:label>
                                     <div class="col-sm-4">
-                                    <form:input path="foodscanCode" class="form-control"  value="${foodItem.foodscanCode}" />
+                                    <form:input path="foodscanCode" class="form-control" />
                                     </div><div class="col-sm-4">
                                     <form:errors path="foodscanCode" cssClass="error"/>
                                 </div> </div>
@@ -31,19 +31,22 @@
                                 <div class="form-group">
                                     <form:label path="foodPrice" class="control-label col-sm-2">Food Price</form:label>
                                      <div class="col-sm-4">
-                                     <form:input path="foodPrice" class="form-control"  value="${foodItem.foodPrice}" />
+                                     <form:input path="foodPrice" class="form-control"  />
                                      </div><div class="col-sm-4">
                                      <form:errors path="foodPrice" cssClass="error" />
                                 </div> </div>
                                  <div class="form-group">
                                      <form:label path="foodDiscription" class="control-label col-sm-2">Food Discription</form:label>
                                       <div class="col-sm-4">
-                                       <form:input path="foodDiscription" class="form-control"  value="${foodItem.foodDiscription}"/>
+                                       <form:textarea path="foodDiscription" class="form-control"  rows="5" cols="30" />
+
+
+
                                        </div><div class="col-sm-4">
                                        <form:errors path="foodDiscription" cssClass="error" />
                                    </div> </div>
                                     <div class="form-group">
-                                                                         <form:label path="file" class="control-label col-sm-2">Food Image</form:label>
+                                                                         <form:label path="file" class="control-label col-sm-2">Food Image(.jpg only)</form:label>
                                                                          <div class="col-sm-4">
                                                                          <form:input path="file" type="file" />
                                                                          </div><div class="col-sm-4">

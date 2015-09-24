@@ -2,6 +2,8 @@ package lk.uoc.mit.restaurant.mysql.model;
 
 import lk.uoc.mit.restaurant.mysql.config.UserType;
 
+import javax.validation.constraints.Size;
+
 /**
  * Created by nilan on 8/1/15.
  */
@@ -11,7 +13,9 @@ public class User {
     private String lastName;
     private String gender;
     private String city;
+    @Size(min = 1, max = 255, message="User Name Can Not be null")
     private String username;
+    @Size(min = 1, max = 255, message="Passward Not be null")
     private String passward;
     private UserType userType;
 

@@ -90,6 +90,33 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
     }
 
+    @Override
+    public List<Order> getAllOrderByDate(String date) {
+        String sql="";
+        Customer customer=new Customer();
+        String fromDate=date+" 00:00:00";
+        String toDate=date+" 11:59:59";
+        sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status!=0 and update_time  between'" + fromDate + "' and '"+toDate+"'";
+
+        List<Order> orders = new ArrayList<Order>();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Order order=new Order();
+            order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
+            order.setDescription(row.get("Description").toString());
+            order.setOrderStatus(OrderStatus.values()[Integer.parseInt(row.get("status").toString())]);
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerEmail(row.get("email").toString());
+            order.setCustomer(customer);
+            order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+            orders.add(order);
+        }
+
+        return orders;
+
+    }
+
 
     @Override
     public Long addFoodItem(final Food food) {
@@ -160,8 +187,8 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
     @Override
     public Long addOrder(final Order order) {
-        final String sql="INSERT INTO Order_master (Description,customer_Id,status)" +
-                " VALUES (?,?,?);";
+        final String sql="INSERT INTO Order_master (Description,customer_Id,status,update_time)" +
+                " VALUES (?,?,?,now());";
         KeyHolder keyHolder=new GeneratedKeyHolder();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(new PreparedStatementCreator(){

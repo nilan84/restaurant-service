@@ -42,8 +42,8 @@ public class PaymentDAOServiceImpl implements PaymetDAOService{
     }
 
     public long addPaymet(final Payment payment){
-        final String sql="INSERT INTO Paymet (Payment_type,order_no,amount)" +
-                " VALUES (?,?,?);";
+        final String sql="INSERT INTO Payment (Payment_type,order_no,amount,datetime)" +
+                " VALUES (?,?,?,now());";
         KeyHolder keyHolder=new GeneratedKeyHolder();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(new PreparedStatementCreator(){

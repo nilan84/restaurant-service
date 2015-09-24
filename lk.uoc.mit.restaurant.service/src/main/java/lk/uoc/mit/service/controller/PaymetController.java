@@ -1,6 +1,7 @@
 package lk.uoc.mit.service.controller;
 
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
+import lk.uoc.mit.restaurant.mysql.config.PaymetType;
 import lk.uoc.mit.restaurant.mysql.model.Order;
 import lk.uoc.mit.restaurant.mysql.model.Payment;
 import lk.uoc.mit.restaurant.mysql.service.FoodDAOService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by nilan on 8/23/15.
@@ -34,17 +34,21 @@ public class PaymetController {
     }
 
     @RequestMapping(value = "/paymetpage", method = RequestMethod.GET)
-    public String finalPage(Model model) {
+    public String finalPage(Model model,@ModelAttribute("payment") @Valid Payment payment) {
         List<Order> orderList=foodDAOService.getAllActiveOrder();
+        model.addAttribute("enumValues", PaymetType.values());
         model.addAttribute("orderList", orderList);
         return "Payment";
     }
 
 
     @RequestMapping(value = "/addpayment", method = RequestMethod.POST)
-    public String addPaymet(@ModelAttribute("payment") @Valid Payment payment,HttpSession session,Map<String, Object> model) {
+    public String addPaymet(@ModelAttribute("payment") @Valid Payment payment,HttpSession session,Model model) {
             paymetDAOService.addPaymet(payment);
             foodDAOService.changeOrderStatus(payment.getOrderNo(),OrderStatus.Payment_Done);
+            List<Order> orderList=foodDAOService.getAllActiveOrder();
+            model.addAttribute("enumValues", PaymetType.values());
+            model.addAttribute("orderList", orderList);
             return "Payment";
     }
 

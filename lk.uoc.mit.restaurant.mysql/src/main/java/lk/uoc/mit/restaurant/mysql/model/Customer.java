@@ -1,5 +1,6 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -7,10 +8,12 @@ import java.io.Serializable;
  */
 public class Customer implements Serializable {
     private static final long serialVersionUID = -7788619177798333712L;
-
+    @Size(min = 1, max = 255, message="Customer Name Can Not be null")
     private String customerName;
     private int customerId;
+    @Size(min = 1, max = 255, message="Email Can Not be null")
     private String customerEmail;
+    @Size(min = 1, max = 255, message="Mob No Can Not be null")
     private String customerMob;
     private String macAddress;
 

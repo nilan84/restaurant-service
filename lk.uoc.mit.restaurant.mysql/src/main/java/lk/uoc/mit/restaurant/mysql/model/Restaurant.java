@@ -5,9 +5,17 @@ package lk.uoc.mit.restaurant.mysql.model;
  */
 public class Restaurant {
     private int resturantId;
-    private String ResturantName;
+    private String resturantName;
     private String latitude;
     private String longitude;
+
+    public String getResturantName() {
+        return resturantName;
+    }
+
+    public void setResturantName(String resturantName) {
+        this.resturantName = resturantName;
+    }
 
     public String getLongitude() {
         return longitude;
@@ -25,13 +33,7 @@ public class Restaurant {
         this.latitude = latitude;
     }
 
-    public String getResturantName() {
-        return ResturantName;
-    }
 
-    public void setResturantName(String resturantName) {
-        ResturantName = resturantName;
-    }
 
     public int getResturantId() {
         return resturantId;

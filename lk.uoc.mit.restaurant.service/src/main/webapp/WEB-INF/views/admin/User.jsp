@@ -35,7 +35,7 @@ $(document).ready(function() {
              <tr>
                <td><c:out value="${user.username}"/></td>
                <td><c:out value="${user.firstName}"/></td>
-                <th><c:out value="${user.lastName}"/></th>
+                <td><c:out value="${user.lastName}"/></td>
                <td><button type="button" class="btn btn-info btn-md" data-toggle="modal"  onclick="location.href = 'edituserview?userid=${user.userId}';" >Edit</button></th>
              </tr>
 

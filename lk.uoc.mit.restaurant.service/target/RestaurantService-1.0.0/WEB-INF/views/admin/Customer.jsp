@@ -13,27 +13,27 @@ $(document).ready(function() {
 <div class="container">
  <div class="col-sm-12">
 <div class="jumbotron">
-<h4>View Employee</h4>
+<h4>View Customer</h4>
 
- <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'employeeadd';" >Add Customer</button>
+ <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'addcustomerview';" >Add Customer</button>
  </br>
  </br>
  <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0"  >
        <thead>
                   <tr>
-                    <th>Employee Name</th>
-                    <th>Employee Email</th>
+                    <th>Customer Name</th>
+                    <th>Customer Email</th>
                     <th></th>
                   </tr>
                 </thead>
                  <tbody>
 
-       <c:forEach items="${employees}" var="employee">
+       <c:forEach items="${customers}" var="customer">
 
             <tr>
-              <td><c:out value="${employee.empName}"/></td>
-              <td><c:out value="${employee.email}"/></td>
-              <td><button type="button" class="btn btn-info btn-md" data-toggle="modal"  onclick="location.href = 'employeeedit?empid=${employee.empId}';" >Edit</button></th>
+              <td><c:out value="${customer.customerName}"/></td>
+              <td><c:out value="${customer.customerEmail}"/></td>
+              <td><button type="button" class="btn btn-info btn-md" data-toggle="modal"  onclick="location.href = 'editcustomerview?custid=${customer.customerId}';" >Edit</button></th>
             </tr>
 
 

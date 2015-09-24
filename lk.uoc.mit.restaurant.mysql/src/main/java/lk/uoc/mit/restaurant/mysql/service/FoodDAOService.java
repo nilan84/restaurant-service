@@ -22,5 +22,6 @@ public interface FoodDAOService {
     public Long editFoodItem(Food food);
     public void changeOrderStatus(long orderNo,OrderStatus orderStatus);
     public void deleteOrderItem(long orderNo,int foodNo);
+    public List<Order> getAllOrderByDate(String Date);
 
 }

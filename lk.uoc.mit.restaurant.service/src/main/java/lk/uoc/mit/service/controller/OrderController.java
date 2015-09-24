@@ -74,4 +74,23 @@ public class OrderController {
         model.addAttribute("orderList", orderFoods);
         return "food/AddOrderFood";
     }
+
+    @RequestMapping(value = "/viewallorder", method = RequestMethod.GET)
+    public String viewOrder(Model model,@RequestParam("date") String date,@ModelAttribute("order")Order order) {
+        List<Order> orderList=foodDAOService.getAllOrderByDate(date);
+        model.addAttribute("enumValues", OrderStatus.values());
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("dateselect", date);
+        return "admin/ViewOrder";
+    }
+
+    @RequestMapping(value = "/chnagestatus", method = RequestMethod.POST)
+    public String chnageOrderStatus(Model model,@ModelAttribute("order")Order order) {
+        foodDAOService.changeOrderStatus(order.getOrderNo(),order.getOrderStatus());
+        List<Order> orderList=foodDAOService.getAllActiveOrder();
+        model.addAttribute("enumValues", OrderStatus.values());
+        model.addAttribute("orderList", orderList);
+        return "admin/ViewOrder";
+    }
 }
+

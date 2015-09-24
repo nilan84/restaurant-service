@@ -12,32 +12,32 @@
 <div class="jumbotron">
 <h4>Add Customer</h4>
 
-  <form:form method="POST"  enctype="multipart/form-data" action="addemployee" class="form-horizontal"  commandName="employee">
+  <form:form method="POST"  enctype="multipart/form-data" action="addemployee" class="form-horizontal"  commandName="customer">
 
                                <div class="form-group">
-                                  <form:label path="empName" class="control-label col-sm-2">Employee Name</form:label>
+                                  <form:label path="customerName" class="control-label col-sm-2">Customer Name</form:label>
                                     <div class="col-sm-4">
-                                    <form:input path="empName" class="form-control"/>
+                                    <form:input path="customerName" class="form-control"/>
                                      </div><div class="col-sm-4">
-                                   <form:errors path="empName" cssClass="error"/>
+                                   <form:errors path="customerName" cssClass="error"/>
                                  </div>  </div>
                                 <div class="form-group">
-                                   <form:label path="email" class="control-label col-sm-2">Employee enail</form:label>
+                                   <form:label path="customerEmail" class="control-label col-sm-2">Customer email</form:label>
                                     <div class="col-sm-4">
-                                    <form:input path="email" class="form-control"  />
+                                    <form:input path="customerEmail" class="form-control"  />
                                     </div><div class="col-sm-4">
-                                    <form:errors path="email" cssClass="error"/>
+                                    <form:errors path="customerEmail" cssClass="error"/>
                                 </div> </div>
 
                                 <div class="form-group">
-                                    <form:label path="mobNo" class="control-label col-sm-2">Employee Mob No</form:label>
+                                    <form:label path="customerMob" class="control-label col-sm-2">Customer Mob No</form:label>
                                      <div class="col-sm-4">
-                                     <form:input path="mobNo" class="form-control"   />
+                                     <form:input path="customerMob" class="form-control"   />
                                      </div><div class="col-sm-4">
-                                     <form:errors path="mobNo" cssClass="error" />
+                                     <form:errors path="customerMob" cssClass="error" />
                                 </div> </div>
                                  <div class="form-group">
-                                     <form:label path="macAddress" class="control-label col-sm-2">Mac Address</form:label>
+                                     <form:label path="macAddress" class="control-label col-sm-2">Customer Mac</form:label>
                                       <div class="col-sm-4">
                                        <form:input path="macAddress" class="form-control"  />
                                        </div><div class="col-sm-4">

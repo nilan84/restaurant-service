@@ -55,7 +55,7 @@ public class FoodController {
         long foodOrderId=orderFood.getOrderNo();
         if(foodOrderId==0) {
             Order order = new Order();
-            order.setDescription("This is order");
+            order.setDescription("This is System order");
             Customer customer = new Customer();
             customer.setCustomerId(0);
             Food food = new Food();
@@ -76,6 +76,28 @@ public class FoodController {
         orderFood.setOrderNo(orderNo);
         foodDAOService.addOrderItem(orderFood);
         foodList=foodDAOService.getAllFood();
+        List <OrderFood> orderFoods=foodDAOService.getOrderFood(orderNo);
+        Map referenceData = new HashMap();
+
+        Map<String,String> count = new LinkedHashMap<String,String>();
+        count.put("1", "1");
+        count.put("2", "2");
+        count.put("3", "3");
+        count.put("4", "4");
+        model.addAttribute("countList", count);
+        model.addAttribute("orderNo", orderNo);
+        model.addAttribute("foodList", foodList);
+        model.addAttribute("orderList", orderFoods);
+        return "food/AddOrderFood";
+    }
+
+
+    @RequestMapping(value = "/editfood", method = RequestMethod.GET)
+    public String editFoodItem(@RequestParam("orderno") long orderno,@ModelAttribute("orderFoodItem") @Valid OrderFood orderFood,Model model,BindingResult result) {
+        List<Food> foodList;
+        long orderNo=orderno;
+        orderFood.setOrderNo(orderNo);
+       foodList=foodDAOService.getAllFood();
         List <OrderFood> orderFoods=foodDAOService.getOrderFood(orderNo);
         Map referenceData = new HashMap();
 
@@ -143,7 +165,7 @@ public class FoodController {
     public String editFoodItem(Map<String, Object> model,@ModelAttribute("food") Food food,@ModelAttribute("foodId") int foodId) {
         Food foodItem=foodDAOService.getFoodById(foodId);
 
-        model.put("foodItem", foodItem);
+        model.put("food", foodItem);
         return "admin/EditFoodItem";
     }
 
@@ -160,7 +182,7 @@ public class FoodController {
                 if (file.getSize() > 0) {
                     inputStream = file.getInputStream();
                     System.out.println("size::" + file.getSize());
-                    fileName = request.getRealPath("") + "/resources/image/food/"
+                    fileName = request.getRealPath("") + "/resources/food/"
                             + food.getFoodNo()+".jpg";
                     outputStream = new FileOutputStream(fileName);
                     System.out.println("fileName:" + file.getOriginalFilename());

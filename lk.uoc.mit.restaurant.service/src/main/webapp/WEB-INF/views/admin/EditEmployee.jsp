@@ -21,7 +21,7 @@
                                                        <form:errors path="empName" cssClass="error"/>
                                                      </div>  </div>
                                                     <div class="form-group">
-                                                       <form:label path="email" class="control-label col-sm-2">Employee enail</form:label>
+                                                       <form:label path="email" class="control-label col-sm-2">Employee email</form:label>
                                                         <div class="col-sm-4">
                                                         <form:input path="email" class="form-control"  />
                                                         </div><div class="col-sm-4">

@@ -6,6 +6,7 @@ import lk.uoc.mit.restaurant.mysql.service.UserDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,19 +38,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/adduser", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("user") @Valid User user,Model model) {
+    public String addUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model) {
+        if(result.hasErrors()) {
+            return "admin/AddUser";
+        }else{
         userDAOService.addUser(user);
         List<User> userList=userDAOService.getAllUser();
         model.addAttribute("users", userList);
-        return "admin/User";
+        return "admin/User";}
     }
 
     @RequestMapping(value = "/edituser", method = RequestMethod.POST)
-    public String editUser(@ModelAttribute("user") @Valid User user,Model model) {
+    public String editUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model) {
+        if(result.hasErrors()) {
+            return "admin/EditUser";
+        }else{
         userDAOService.editUser(user);
         List<User> userList=userDAOService.getAllUser();
         model.addAttribute("users", userList);
-        return "admin/User";
+        return "admin/User";}
     }
 
     @RequestMapping(value = "/edituserview", method = RequestMethod.GET)

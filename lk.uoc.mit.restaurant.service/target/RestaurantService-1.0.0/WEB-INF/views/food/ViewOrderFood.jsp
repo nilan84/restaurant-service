@@ -13,7 +13,7 @@
            <thead>
                       <tr>
                         <th>Order No</th>
-                        <th>Customer Name</th>
+                        <th>Order Description</th>
                         <th>Order Amount</th>
                       </tr>
                     </thead>
@@ -21,9 +21,9 @@
            <c:forEach items="${orderList}" var="order">
 
                 <tr>
-                  <th><c:out value="${order.orderNo}"/></th>
-                  <th><c:out value="${order.description}"/></th>
-                  <th> <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'fooditemadd';" >Edit Order</button></th>
+                  <td><c:out value="${order.orderNo}"/></td>
+                  <td><c:out value="${order.description}"/></td>
+                  <td> <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'editfood?orderno=${order.orderNo}';" >Edit Order</button></td>
                 </tr>
 
 

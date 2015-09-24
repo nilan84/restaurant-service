@@ -37,7 +37,7 @@ public class RestaurantDAOServiceImpl  implements RestaurantDAOService {
             restaurant.setResturantId(Integer.parseInt(row.get("restaurantLocation_id").toString()));
             restaurant.setResturantName(row.get("res_name").toString());
             restaurant.setLatitude(row.get("lat").toString());
-            restaurant.setLatitude(row.get("log").toString());
+            restaurant.setLongitude(row.get("log").toString());
             restaurantList.add(restaurant);
         }
 
@@ -77,7 +77,7 @@ public class RestaurantDAOServiceImpl  implements RestaurantDAOService {
                 ps.setString(1, restaurant.getResturantName());
                 ps.setString(2,restaurant.getLatitude());
                 ps.setString(3,restaurant.getLatitude());
-                ps.setInt(5,restaurant.getResturantId());
+                ps.setInt(4,restaurant.getResturantId());
                 return ps;
             }
         });
@@ -94,7 +94,7 @@ public class RestaurantDAOServiceImpl  implements RestaurantDAOService {
             restaurant.setResturantId(Integer.parseInt(row.get("restaurantLocation_id").toString()));
             restaurant.setResturantName(row.get("res_name").toString());
             restaurant.setLatitude(row.get("lat").toString());
-            restaurant.setLatitude(row.get("log").toString());
+            restaurant.setLongitude(row.get("log").toString());
         }
 
         return restaurant;

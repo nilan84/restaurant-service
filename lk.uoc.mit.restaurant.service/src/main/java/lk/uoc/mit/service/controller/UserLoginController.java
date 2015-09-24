@@ -32,28 +32,10 @@ public class UserLoginController {
     public @ResponseBody
     String processAJAXRequest(
             @RequestParam("username") String firstname,
-            @RequestParam("passward") String lastname,HttpSession httpSession) {
+            @RequestParam("passward") String password,HttpSession httpSession) {
         String response = "Login ok";
-        httpSession.setAttribute("username","nilan");
-        // Process the request
-        // Prepare the response string
-      /*  GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Arrays.asList("593062383989-m01qcr5b11s0oh4mdae2d5jbikpkig5v.apps.googleusercontent.com"))
-                .build();
+        httpSession.setAttribute("username",firstname);
 
-        GoogleIdToken idToken = verifier.verify(idTokenString);
-        if (idToken != null) {
-            Payload payload = idToken.getPayload();
-            if (payload.getHostedDomain().equals(APPS_DOMAIN_NAME)
-                    // If multiple clients access the backend server:
-                    && Arrays.asList(ANDROID_CLIENT_ID, IOS_CLIENT_ID).contains(payload.getAuthorizedParty())) {
-                System.out.println("User ID: " + payload.getSubject());
-            } else {
-                System.out.println("Invalid ID token.");
-            }
-        } else {
-            System.out.println("Invalid ID token.");
-        }*/
         return response;
     }
 
