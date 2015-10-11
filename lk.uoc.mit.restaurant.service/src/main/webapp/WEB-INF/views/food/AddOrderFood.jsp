@@ -10,8 +10,23 @@ $(document).on("click", ".open-Dialog", function () {
      var foodprice=$(this).data('price');
      $("#foodId").val( foodId );
      $("#unitPrice").val( foodprice );
+     $("#originalPrice").val( foodprice );
+     $("#description").val( "" );
+     $("#sel").val( "0" );
+     $("#noOfitem").val( "1" );
      $('#myModal').modal('show');
 });
+
+function getComboA(sel) {
+    var value = sel.value;
+    var unitPrice = document.getElementById("originalPrice").value;
+    var discount=(unitPrice*value)/100;
+    $("#description").val( "Descount "+value+"%" );
+    var newPrice=unitPrice-discount;
+    $("#unitPrice").val( newPrice );
+
+
+}
 </script>
 
 </head>
@@ -100,12 +115,33 @@ $(document).on("click", ".open-Dialog", function () {
 
                                            <form:hidden path="foodId" class="form-control" />
                                            <form:hidden path="orderNo" class="form-control" value="${orderNo}"/>
+                                            <div class="form-group">
+                                             <form:label path="unitPrice" class="control-label col-sm-4">Original Price</form:label>
+                                             <div class="col-sm-4">
+                                              <input type="text" name="originalPrice" id="originalPrice" readonly="true" >
+                                              </div>
+                                             </div>
                                            <div class="form-group">
-                                              <form:label path="unitPrice" class="control-label col-sm-4">Food Price</form:label>
+                                              <form:label path="unitPrice" class="control-label col-sm-4">Sale Food Price</form:label>
                                                 <div class="col-sm-4">
                                                 <form:input path="unitPrice" class="form-control"/>
+
                                                  </div>
                                              </div>
+                                              <div class="form-group">
+                                                 <form:label path="unitPrice" class="control-label col-sm-4">Food Discount</form:label>
+                                                 <div class="col-sm-4">
+                                                 <select id="sel" onchange="getComboA(this)" >
+                                                  <option value="0" selected>Select </option>
+                                                  <option value="25">25</option>
+                                                  <option value="20">20</option>
+                                                  <option value="10">10</option>
+
+                                                </select>
+
+                                                 </div>
+                                                 </div>
+
                                             <div class="form-group">
                                                <form:label path="description" class="control-label col-sm-4">Description</form:label>
                                                 <div class="col-sm-4">

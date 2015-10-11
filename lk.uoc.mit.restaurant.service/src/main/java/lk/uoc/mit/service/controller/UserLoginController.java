@@ -43,8 +43,9 @@ public class UserLoginController {
     public String logout(HttpSession httpSession) {
         String response = "Logout Done";
         httpSession.invalidate();
-        return "Home";
+        return "home/Home";
     }
+
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String redirect() {
@@ -55,7 +56,7 @@ public class UserLoginController {
     public String finalPage(Model model,HttpSession session) {
         session.setAttribute("uuid",123);
         session.getAttribute("uuid");
-        return "Home";
+        return "home/Home";
     }
 
     @RequestMapping(value = "/apphome", method = RequestMethod.GET)

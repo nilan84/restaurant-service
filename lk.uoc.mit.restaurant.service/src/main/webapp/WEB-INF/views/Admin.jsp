@@ -59,6 +59,7 @@
       <li><a href="employee">Employee</a></li>
       <li><a href="viewallorder?date=2015-09-24">View Order</a></li>
       <li><a href="report">Report</a></li>
+      <li><a href="dashboard">Dashboard</a></li>
     </ul>
 
 <%@ include file="Login.jsp" %>

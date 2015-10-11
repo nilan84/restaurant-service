@@ -95,7 +95,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         String sql="";
         Customer customer=new Customer();
         String fromDate=date+" 00:00:00";
-        String toDate=date+" 11:59:59";
+        String toDate=date+" 23:59:59";
         sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status!=0 and update_time  between'" + fromDate + "' and '"+toDate+"'";
 
         List<Order> orders = new ArrayList<Order>();
@@ -166,8 +166,8 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
     @Override
     public Long addOrderItem(final OrderFood orderFood) {
-        final String sql="INSERT INTO Order_Item (oder_No,Food_no,unit_price,total_Price,no_of_unit)" +
-                " VALUES (?,?,?,?,?);";
+        final String sql="INSERT INTO Order_Item (oder_No,Food_no,unit_price,total_Price,no_of_unit,description)" +
+                " VALUES (?,?,?,?,?,?);";
         KeyHolder keyHolder=new GeneratedKeyHolder();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(new PreparedStatementCreator(){
@@ -178,6 +178,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
                 ps.setDouble(3,orderFood.getUnitPrice());
                 ps.setDouble(4,(orderFood.getUnitPrice()*orderFood.getNoOfitem()));
                 ps.setInt(5,orderFood.getNoOfitem());
+                ps.setString(6,orderFood.getDescription());
                 return ps;
             }
         },keyHolder);

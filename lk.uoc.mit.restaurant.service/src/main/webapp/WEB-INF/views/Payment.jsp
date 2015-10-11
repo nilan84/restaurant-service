@@ -64,7 +64,8 @@
                               <th>Order No</th>
                               <th>Customer Name</th>
                               <th>Order Amount</th>
-
+                              <th></th>
+                              <th></th>
                             </tr>
                           </thead>
                            <tbody>
@@ -74,6 +75,7 @@
                         <td><c:out value="${order.orderNo}"/></td>
                         <td><c:out value="${order.customer.customerName}"/></td>
                        <td><c:out value="${order.orderAmount}"/></td>
+                       <td> <button type="button" class="btn btn-info btn-md" data-toggle="modal" onclick="location.href = 'guestbill?id=${order.orderNo}';" >Print Guest Bill</button></td>
                        <td> <button type="button" class="open-Dialog btn btn-info btn-md" data-toggle="modal"  data-id="${order.orderNo}" data-price="${order.orderAmount}"  data-target="#myModal">Pay</button></td>
 
                          </tr>
