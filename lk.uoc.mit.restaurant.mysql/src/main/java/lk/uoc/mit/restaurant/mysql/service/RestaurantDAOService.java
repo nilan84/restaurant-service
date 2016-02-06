@@ -1,5 +1,6 @@
 package lk.uoc.mit.restaurant.mysql.service;
 
+import lk.uoc.mit.restaurant.mysql.model.GpsTracker;
 import lk.uoc.mit.restaurant.mysql.model.Location;
 import lk.uoc.mit.restaurant.mysql.model.Restaurant;
 
@@ -14,5 +15,6 @@ public interface RestaurantDAOService {
     public long addLocation(Location location);
     public void editRestaurant(Restaurant restaurant);
     public Restaurant getRestaurantById(int restId);
+    public GpsTracker getMaxGPS(long orderNo);
 
 }

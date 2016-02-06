@@ -2,12 +2,10 @@ package lk.uoc.mit.restaurant.mysql.service.impl;
 
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
 import lk.uoc.mit.restaurant.mysql.config.UserType;
-import lk.uoc.mit.restaurant.mysql.model.Customer;
-import lk.uoc.mit.restaurant.mysql.model.Food;
-import lk.uoc.mit.restaurant.mysql.model.Order;
-import lk.uoc.mit.restaurant.mysql.model.OrderFood;
+import lk.uoc.mit.restaurant.mysql.model.*;
 import lk.uoc.mit.restaurant.mysql.service.FoodDAOService;
 import lk.uoc.mit.restaurant.mysql.service.PaymetDAOService;
+import lk.uoc.mit.restaurant.mysql.service.RestaurantDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -37,8 +35,11 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     private DataSource dataSource;
     @Autowired
     private PaymetDAOService paymentDAOService;
+
     @Autowired
-    private HttpSession httpSession;
+    private RestaurantDAOService restaurantDAOService;
+
+
 
     public FoodDAOServiceImpl() {
     }
@@ -63,18 +64,20 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     }
 
     @Override
-    public List<Order> getAllActiveOrder() {
+    public List<Order> getAllActiveOrder(HttpSession httpSession) throws Exception{
         String sql="";
-        Customer customer=new Customer();
-        if(httpSession.getAttribute("UserType")==UserType.Mobile) {
+
+        if(httpSession.getAttribute("usertype")==UserType.Mobile ||httpSession.getAttribute("usertype")==UserType.Web ) {
              sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id='"+httpSession.getAttribute("customer_Id")+"' and Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Confirm.ordinal() + "'";
-        }else{
+        }else if(httpSession.getAttribute("usertype")==UserType.Admin || httpSession.getAttribute("usertype")==UserType.Waiter){
             sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Confirm.ordinal() + "'";
         }
+
         List<Order> orders = new ArrayList<Order>();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map row : rows) {
+            Customer customer=new Customer();
             Order order=new Order();
             order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
             order.setDescription(row.get("Description").toString());
@@ -83,6 +86,43 @@ public class FoodDAOServiceImpl implements FoodDAOService {
             customer.setCustomerEmail(row.get("email").toString());
             order.setCustomer(customer);
             order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+            GpsTracker gpsTracker=restaurantDAOService.getMaxGPS(order.getOrderNo());
+            order.setLat(gpsTracker.getLat());
+            order.setLng(gpsTracker.getLog());
+            orders.add(order);
+        }
+
+        return orders;
+
+    }
+
+
+    @Override
+    public List<Order> getAllOnDeliveryOrder(HttpSession httpSession) throws Exception{
+        String sql="";
+
+        if(httpSession.getAttribute("usertype")==UserType.Mobile ||httpSession.getAttribute("usertype")==UserType.Web ) {
+            sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id='"+httpSession.getAttribute("customer_Id")+"' and Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Delivering.ordinal() + "'";
+        }else if(httpSession.getAttribute("usertype")==UserType.Admin || httpSession.getAttribute("usertype")==UserType.Waiter){
+            sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status='" + OrderStatus.Delivering.ordinal() + "'";
+        }
+
+        List<Order> orders = new ArrayList<Order>();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Customer customer=new Customer();
+            Order order=new Order();
+            order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
+            order.setDescription(row.get("Description").toString());
+            order.setOrderStatus(OrderStatus.values()[Integer.parseInt(row.get("status").toString())]);
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerEmail(row.get("email").toString());
+            order.setCustomer(customer);
+            order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+            GpsTracker gpsTracker=restaurantDAOService.getMaxGPS(order.getOrderNo());
+            order.setLat(gpsTracker.getLat());
+            order.setLng(gpsTracker.getLog());
             orders.add(order);
         }
 
@@ -93,7 +133,6 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     @Override
     public List<Order> getAllOrderByDate(String date) {
         String sql="";
-        Customer customer=new Customer();
         String fromDate=date+" 00:00:00";
         String toDate=date+" 23:59:59";
         sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and status!=0 and update_time  between'" + fromDate + "' and '"+toDate+"'";
@@ -102,6 +141,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map row : rows) {
+            Customer customer=new Customer();
             Order order=new Order();
             order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
             order.setDescription(row.get("Description").toString());
@@ -284,6 +324,27 @@ public class FoodDAOServiceImpl implements FoodDAOService {
                 return ps;
             }
         });
+
+    }
+
+    public Order getOrderById(Long orderId){
+        Order order=new Order();
+        String sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and Order_id='"+orderId+"'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Customer customer=new Customer();
+            order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
+            order.setDescription(row.get("Description").toString());
+            order.setOrderStatus(OrderStatus.values()[Integer.parseInt(row.get("status").toString())]);
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerEmail(row.get("email").toString());
+            order.setCustomer(customer);
+            order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+
+        }
+
+        return order;
 
     }
 }

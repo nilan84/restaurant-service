@@ -68,10 +68,10 @@
                 <tr>
                  <td><c:out value="${order.orderNo}"/></td>
                  <td><c:out value="${order.customer.customerName}"/></td>
-                 <td><c:out value="${order.orderNo}"/></td>
-                 <td><c:out value="${order.orderNo}"/></td>
+                 <td><c:out value="${order.customer.customerEmail}"/></td>
+                 <td><c:out value="${order.orderStatus}"/></td>
 
-                 <td> <button  type="button" class="open-Dialog btn btn-info btn-md" data-toggle="modal" data-lat="6.8860127" data-lng="79.9033939" data-rlat="6.9016" data-rlng="79.8596" data-target="#myModal">View Location</button></td>
+                 <td> <button  type="button" class="open-Dialog btn btn-info btn-md" data-toggle="modal" data-lat="${order.lat}" data-lng="${order.lng}" data-rlat="6.9016" data-rlng="79.8596" data-target="#myModal">View Location</button></td>
                </tr>
 
 

@@ -1,5 +1,6 @@
 package lk.uoc.mit.service.controller;
 
+import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.Food;
 import lk.uoc.mit.restaurant.mysql.model.Order;
@@ -19,13 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,10 +44,10 @@ public class FoodController {
     }
 
     @RequestMapping(value = "/foodPage", method = RequestMethod.GET)
-    public String finalPage(@ModelAttribute("orderFoodItem") @Valid OrderFood orderFood,Model model) {
+    public String finalPage(@ModelAttribute("orderFoodItem") @Valid OrderFood orderFood,Model model,HttpSession httpSession) {
         List<Food> foodList;
-        Map referenceData = new HashMap();
-        Map<String,String> count = new LinkedHashMap<String,String>();
+
+        Map<String,String> count = new HashMap<String,String>();
         count.put("1", "1");
         count.put("2", "2");
         count.put("3", "3");
@@ -57,7 +58,15 @@ public class FoodController {
             Order order = new Order();
             order.setDescription("This is System order");
             Customer customer = new Customer();
-            customer.setCustomerId(0);
+            int custId;
+            try {
+                custId = Integer.parseInt(httpSession.getAttribute("customer_Id").toString());
+            }catch(Exception ex){
+                custId=0;
+                ex.printStackTrace();
+            }
+
+            customer.setCustomerId(custId);
             Food food = new Food();
             food.setFoodNo(1);
             order.setCustomer(customer);
@@ -77,9 +86,9 @@ public class FoodController {
         foodDAOService.addOrderItem(orderFood);
         foodList=foodDAOService.getAllFood();
         List <OrderFood> orderFoods=foodDAOService.getOrderFood(orderNo);
-        Map referenceData = new HashMap();
 
-        Map<String,String> count = new LinkedHashMap<String,String>();
+
+        Map<String,String> count = new HashMap<String,String>();
         count.put("1", "1");
         count.put("2", "2");
         count.put("3", "3");
@@ -99,9 +108,9 @@ public class FoodController {
         orderFood.setOrderNo(orderNo);
        foodList=foodDAOService.getAllFood();
         List <OrderFood> orderFoods=foodDAOService.getOrderFood(orderNo);
-        Map referenceData = new HashMap();
 
-        Map<String,String> count = new LinkedHashMap<String,String>();
+
+        Map<String,String> count = new HashMap<String,String>();
         count.put("1", "1");
         count.put("2", "2");
         count.put("3", "3");
@@ -129,11 +138,18 @@ public class FoodController {
 
     @RequestMapping(value = "/addfoodPage", method = RequestMethod.GET)
     public ModelAndView addFoodPage(HttpServletRequest request,
-                                    HttpServletResponse response) {
+                                    HttpServletResponse response,HttpSession httpSession) {
+        ModelAndView mav;
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin){
         List<Food> foodList;
         foodList=foodDAOService.getAllFood();
-        ModelAndView mav = new ModelAndView("admin/AddFood", "command", new Food());
+        mav = new ModelAndView("admin/AddFood", "command", new Food());
         mav.addObject("foodList", foodList);
+        }
+        else{
+            mav = new ModelAndView("admin/Unauthorized");
+
+        }
         return mav;
     }
 

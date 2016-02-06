@@ -1,5 +1,6 @@
 package lk.uoc.mit.restaurant.mysql.service.impl;
 
+import lk.uoc.mit.restaurant.mysql.model.GpsTracker;
 import lk.uoc.mit.restaurant.mysql.model.Location;
 import lk.uoc.mit.restaurant.mysql.model.Restaurant;
 import lk.uoc.mit.restaurant.mysql.service.RestaurantDAOService;
@@ -98,6 +99,21 @@ public class RestaurantDAOServiceImpl  implements RestaurantDAOService {
         }
 
         return restaurant;
+
+    }
+
+    public GpsTracker getMaxGPS(long orderNo){
+        String sql = "Select * From Gps_Tracker where order_No="+orderNo+" and date_time=(Select Max(date_time) From Gps_Tracker where order_No="+orderNo+")";
+        GpsTracker gpsTracker = new GpsTracker();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            gpsTracker.setLat(row.get("Latitude").toString());
+            gpsTracker.setLog(row.get("Longitude").toString());
+
+        }
+
+        return gpsTracker;
 
     }
 

@@ -3,14 +3,17 @@ package lk.uoc.mit.service.controller;
 import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.Employee;
+import lk.uoc.mit.restaurant.mysql.model.User;
 import lk.uoc.mit.restaurant.mysql.service.CustomerDAOService;
 import lk.uoc.mit.restaurant.mysql.service.EmployeeDAOService;
+import lk.uoc.mit.restaurant.mysql.service.UserDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -28,15 +31,56 @@ public class UserLoginController {
     @Autowired
     CustomerDAOService customerDAOService;
 
+    @Autowired
+    UserDAOService userDAOService;
+
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public @ResponseBody
-    String processAJAXRequest(
+    void processAJAXRequest(
             @RequestParam("username") String firstname,
-            @RequestParam("passward") String password,HttpSession httpSession) {
-        String response = "Login ok";
-        httpSession.setAttribute("username",firstname);
+            @RequestParam("passward") String password,@RequestParam("id") String id,HttpSession httpSession,HttpServletResponse response) {
 
-        return response;
+        User user=userDAOService.getUserByName(firstname);
+        if(user.getUserType()!=null){
+            if(password.equalsIgnoreCase(user.getPassword())){
+            httpSession.setAttribute("username",user.getUsername());
+            httpSession.setAttribute("usertype",user.getUserType());
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setContentType("text/plain;charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
+            }
+            else{
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("text/plain;charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
+
+            }
+
+        }
+        else if(id!=null) {
+            Customer customer=customerDAOService.getCustomerByemail(password);
+            long customerId=customer.getCustomerId();
+            if(customer.getCustomerId()==0) {
+                customer.setCustomerEmail(password);
+                customer.setCustomerName(firstname);
+                customer.setCustomerMob("Mob No");
+                customer.setMacAddress(password);
+                customerId = customerDAOService.addCustomer(customer);
+            }
+            httpSession.setAttribute("username", firstname);
+            httpSession.setAttribute("usertype", UserType.Web);
+            httpSession.setAttribute("customer_Id",customerId);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("text/plain;charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+        }
+        else{
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("text/plain;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");}
+
+
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -54,6 +98,7 @@ public class UserLoginController {
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String finalPage(Model model,HttpSession session) {
+        
         session.setAttribute("uuid",123);
         session.getAttribute("uuid");
         return "home/Home";
@@ -66,7 +111,7 @@ public class UserLoginController {
             session.setAttribute("username", customer.getCustomerName());
             session.setAttribute("mac",mac);
             session.setAttribute("customer_Id",customer.getCustomerId());
-            session.setAttribute("UserType",UserType.Mobile);}
+            session.setAttribute("usertype",UserType.Mobile);}
         return "Home";
     }
 
@@ -89,10 +134,14 @@ public class UserLoginController {
     }
 
     @RequestMapping(value = "/employeepage", method = RequestMethod.GET)
-    public String employeePage(@ModelAttribute("employee") @Valid Employee employee,Model model) {
+    public String employeePage(@ModelAttribute("employee") @Valid Employee employee,Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")==UserType.Admin){
         List<Employee> employeeList=employeeDAOService.getAllEmployee();
         model.addAttribute("employees", employeeList);
-        return "admin/Employee";
+        return "admin/Employee";}
+        else{
+            return "admin/Unauthorized";
+        }
     }
 
     @RequestMapping(value = "/employeeadd", method = RequestMethod.GET)

@@ -1,5 +1,6 @@
 package lk.uoc.mit.service.controller;
 
+import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.service.CustomerDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
 /**
  * Created by nilan on 9/21/15.
+ * Customer Controller
  */
 
 @Controller
@@ -25,14 +28,18 @@ public class CustomerController {
     CustomerDAOService customerDAOService;
 
     @RequestMapping(value = "/customer", method = RequestMethod.GET)
-    public String customerPage(Model model) {
+    public String customerPage(Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")==UserType.Admin){
         List<Customer> customerList=customerDAOService.getAllCustomer();
         model.addAttribute("customers", customerList);
-        return "admin/Customer";
+        return "admin/Customer";}
+        else{
+        return "admin/Unauthorized";
+        }
     }
 
     @RequestMapping(value = "/addcustomer", method = RequestMethod.POST)
-    public String addCustomer(@ModelAttribute("customer") @Valid Customer customer,BindingResult result,Model model) {
+    public String addCustomer(@ModelAttribute("customer") @Valid Customer customer,BindingResult result,Model model,HttpSession httpSession) {
         if(result.hasErrors()) {
             return "admin/AddCustomer";
         }else{
@@ -41,6 +48,7 @@ public class CustomerController {
         model.addAttribute("customers", customerList);
         return "admin/Customer";}
     }
+
 
     @RequestMapping(value = "/editcustomer", method = RequestMethod.POST)
     public String editCustomer(@ModelAttribute("customer") @Valid Customer customer,BindingResult result,Model model) {

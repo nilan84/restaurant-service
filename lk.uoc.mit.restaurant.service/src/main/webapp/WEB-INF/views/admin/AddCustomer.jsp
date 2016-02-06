@@ -14,13 +14,15 @@
 
   <form:form method="POST"  enctype="multipart/form-data" action="addcustomer" class="form-horizontal"  commandName="customer">
 
-                               <div class="form-group">
-                                  <form:label path="customerName" class="control-label col-sm-2">Customer Name</form:label>
-                                    <div class="col-sm-4">
-                                    <form:input path="customerName" class="form-control"/>
-                                     </div><div class="col-sm-4">
-                                   <form:errors path="customerName" cssClass="error"/>
-                                 </div>  </div>
+  <div class="form-group">
+  <form:label path="customerName" class="control-label col-sm-2">Customer Name</form:label>
+  <div class="col-sm-4">
+  <form:input path="customerName" class="form-control"/>
+  </div><div class="col-sm-4">
+  <form:errors path="customerName" cssClass="error"/>
+  </div>  </div>
+
+
                                 <div class="form-group">
                                    <form:label path="customerEmail" class="control-label col-sm-2">Customer email</form:label>
                                     <div class="col-sm-4">

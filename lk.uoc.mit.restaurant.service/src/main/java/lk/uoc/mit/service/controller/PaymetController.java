@@ -34,22 +34,32 @@ public class PaymetController {
     }
 
     @RequestMapping(value = "/paymetpage", method = RequestMethod.GET)
-    public String finalPage(Model model,@ModelAttribute("payment") @Valid Payment payment) {
-        List<Order> orderList=foodDAOService.getAllActiveOrder();
-        model.addAttribute("enumValues", PaymetType.values());
-        model.addAttribute("orderList", orderList);
-        return "Payment";
+    public String finalPage(Model model, @ModelAttribute("payment") @Valid Payment payment, HttpSession httpSession) {
+        try {
+            List<Order> orderList = foodDAOService.getAllActiveOrder(httpSession);
+            model.addAttribute("enumValues", PaymetType.values());
+            model.addAttribute("orderList", orderList);
+            return "Payment";
+        } catch (Exception ex) {
+
+            return "admin/NoDataFoundPayment";
+        }
     }
 
 
     @RequestMapping(value = "/addpayment", method = RequestMethod.POST)
-    public String addPaymet(@ModelAttribute("payment") @Valid Payment payment,HttpSession session,Model model) {
+    public String addPaymet(@ModelAttribute("payment") @Valid Payment payment, HttpSession session, Model model, HttpSession httpSession) {
+        try {
             paymetDAOService.addPaymet(payment);
-            foodDAOService.changeOrderStatus(payment.getOrderNo(),OrderStatus.Payment_Done);
-            List<Order> orderList=foodDAOService.getAllActiveOrder();
+            foodDAOService.changeOrderStatus(payment.getOrderNo(), OrderStatus.Payment_Done);
+            List<Order> orderList = foodDAOService.getAllActiveOrder(httpSession);
             model.addAttribute("enumValues", PaymetType.values());
             model.addAttribute("orderList", orderList);
             return "Payment";
+        } catch (Exception ex) {
+
+            return "admin/NoDataFoundPayment";
+        }
     }
 
 }

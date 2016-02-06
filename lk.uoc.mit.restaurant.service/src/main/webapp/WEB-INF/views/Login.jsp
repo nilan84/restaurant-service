@@ -12,6 +12,8 @@ $(document).ready(function() {
 			var passward = $('#passward').val();
 			var data = 'username='
 					+ encodeURIComponent(username)
+					+ '&id='
+                    + encodeURIComponent(passward)
 					+ '&passward='
 					+ encodeURIComponent(passward);
 		    if(!username){
@@ -52,8 +54,10 @@ function onSignIn(googleUser) {
 console.log(id_token);
 			var data = 'username='
 					+ encodeURIComponent(profile.getName())
-					+ '&passward='
-					+ encodeURIComponent(profile.getName());
+					+ '&id='
+					+ encodeURIComponent(id_token)
+                    					+ '&passward='
+					+ encodeURIComponent(profile.getEmail());
 
 singInsystem(data);
 

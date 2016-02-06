@@ -13,5 +13,6 @@ public interface UserDAOService {
  public long addUser(User user);
  public void editUser(User user);
  public User getUserById(int userId);
+ public User getUserByName(String userName);
 
 }

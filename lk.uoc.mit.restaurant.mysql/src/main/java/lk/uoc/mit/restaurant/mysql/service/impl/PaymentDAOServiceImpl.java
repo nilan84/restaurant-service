@@ -34,9 +34,12 @@ public class PaymentDAOServiceImpl implements PaymetDAOService{
         Food fooditem = new Food();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        try{
         for (Map row : rows) {
             amount=Double.parseDouble(row.get("sumamount").toString());
 
+        }}catch(Exception ex){
+            amount=0.0;
         }
         return amount;
     }

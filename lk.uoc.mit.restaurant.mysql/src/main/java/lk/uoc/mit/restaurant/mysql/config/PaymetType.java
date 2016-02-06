@@ -4,7 +4,7 @@ package lk.uoc.mit.restaurant.mysql.config;
  * Created by nilan on 9/20/15.
  */
 public enum PaymetType {
-    Cash("Cash"),Credit_Card("Credit Card"),Mobile_Cach("Mobile Cash");
+    Cash("Cash"),Visa_Card("Visa Card"),Master_Card("Master Card"),Mobile_Cach("Mobile Cash");
 
     private String value;
 

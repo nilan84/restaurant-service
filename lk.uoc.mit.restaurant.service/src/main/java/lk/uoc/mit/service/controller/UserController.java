@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,26 +32,38 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userpage", method = RequestMethod.GET)
-    public String userPage(Model model) {
+    public String userPage(Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
         List<User> userList=userDAOService.getAllUser();
         model.addAttribute("users", userList);
         return "admin/User";
+
+        }else{
+            return "admin/Unauthorized";
+        }
     }
 
     @RequestMapping(value = "/adduser", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model) {
+    public String addUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
         if(result.hasErrors()) {
             return "admin/AddUser";
         }else{
         userDAOService.addUser(user);
         List<User> userList=userDAOService.getAllUser();
         model.addAttribute("users", userList);
-        return "admin/User";}
+        return "admin/User";
+
+        }}else{
+                return "admin/Unauthorized";
+            }
+
     }
 
     @RequestMapping(value = "/edituser", method = RequestMethod.POST)
     public String editUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model) {
         if(result.hasErrors()) {
+            model.addAttribute("enumValues", UserType.values());
             return "admin/EditUser";
         }else{
         userDAOService.editUser(user);

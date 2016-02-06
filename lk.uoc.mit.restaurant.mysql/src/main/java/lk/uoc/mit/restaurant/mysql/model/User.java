@@ -15,8 +15,8 @@ public class User {
     private String city;
     @Size(min = 1, max = 255, message="User Name Can Not be null")
     private String username;
-    @Size(min = 1, max = 255, message="Passward Not be null")
-    private String passward;
+    @Size(min = 6, max = 100, message="Password must be at least 6 characters")
+    private String password;
     private UserType userType;
 
     public UserType getUserType() {
@@ -35,12 +35,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassward() {
-        return passward;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassward(String passward) {
-        this.passward = passward;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getUserId() {

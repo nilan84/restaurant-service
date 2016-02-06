@@ -5,7 +5,9 @@ import java.io.Serializable;
 
 /**
  * Created by nilan on 9/4/15.
+ * Customer model
  */
+
 public class Customer implements Serializable {
     private static final long serialVersionUID = -7788619177798333712L;
     @Size(min = 1, max = 255, message="Customer Name Can Not be null")

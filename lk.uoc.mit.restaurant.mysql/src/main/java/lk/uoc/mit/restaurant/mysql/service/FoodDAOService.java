@@ -5,6 +5,7 @@ import lk.uoc.mit.restaurant.mysql.model.Order;
 import lk.uoc.mit.restaurant.mysql.model.OrderFood;
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -13,7 +14,8 @@ import java.util.List;
 public interface FoodDAOService {
 
     public List<Food> getAllFood();
-    public List<Order> getAllActiveOrder();
+    public List<Order> getAllActiveOrder(HttpSession httpSession) throws Exception;
+    public List<Order> getAllOnDeliveryOrder(HttpSession httpSession) throws Exception;
     public Long addFoodItem(Food food);
     public Long addOrderItem(OrderFood orderFood);
     public Long addOrder(Order order);
@@ -23,5 +25,6 @@ public interface FoodDAOService {
     public void changeOrderStatus(long orderNo,OrderStatus orderStatus);
     public void deleteOrderItem(long orderNo,int foodNo);
     public List<Order> getAllOrderByDate(String Date);
+    public Order getOrderById(Long orderId);
 
 }

@@ -91,7 +91,9 @@ function getComboA(sel) {
                    </c:forEach>
 
             </table>
+            <% if(session.getAttribute("usertype")!=null){ %>
             <a href="canfirmorder?id=${orderNo}" class="btn btn-success btn-md">Order</a>
+             <% } %>
             </div>
           </div></div>
         </div>

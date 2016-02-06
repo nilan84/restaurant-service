@@ -37,7 +37,7 @@ public class UserDAOServiceImpl implements UserDAOService {
             User user=new User();
             user.setUserId(Integer.parseInt(row.get("user_id").toString()));
             user.setUsername(row.get("user_name").toString());
-            user.setPassward(row.get("passward").toString());
+            user.setPassword(row.get("passward").toString());
             user.setFirstName(row.get("first_name").toString());
             user.setLastName(row.get("last_name").toString());
             user.setUserType(UserType.values()[(Integer.parseInt(row.get("user_type").toString()))]);
@@ -56,7 +56,7 @@ public class UserDAOServiceImpl implements UserDAOService {
             @Override public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
                 PreparedStatement ps=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUsername());
-                ps.setString(2, user.getPassward());
+                ps.setString(2, user.getPassword());
                 ps.setString(3,user.getFirstName());
                 ps.setString(4, user.getLastName());
                 ps.setInt(5, user.getUserType().ordinal());
@@ -73,7 +73,7 @@ public class UserDAOServiceImpl implements UserDAOService {
         jdbcTemplate.update(new PreparedStatementCreator(){
             @Override public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
                 PreparedStatement ps=conn.prepareStatement(sql);
-                ps.setString(1, user.getPassward());
+                ps.setString(1, user.getPassword());
                 ps.setString(2, user.getLastName());
                 ps.setString(3,user.getFirstName());
                 ps.setInt(4, user.getUserType().ordinal());
@@ -91,7 +91,7 @@ public class UserDAOServiceImpl implements UserDAOService {
         for (Map row : rows) {
             user.setUserId(Integer.parseInt(row.get("user_id").toString()));
             user.setUsername(row.get("user_name").toString());
-            user.setPassward(row.get("passward").toString());
+            user.setPassword(row.get("passward").toString());
             user.setFirstName(row.get("first_name").toString());
             user.setLastName(row.get("last_name").toString());
             user.setUserType(UserType.values()[(Integer.parseInt(row.get("user_type").toString()))]);
@@ -100,4 +100,23 @@ public class UserDAOServiceImpl implements UserDAOService {
         return user;
 
     }
+
+    public User getUserByName(String username){
+        String sql = "SELECT * FROM user where user_name='"+username+"'";
+        User user = new User();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            user.setUserId(Integer.parseInt(row.get("user_id").toString()));
+            user.setUsername(row.get("user_name").toString());
+            user.setPassword(row.get("passward").toString());
+            user.setFirstName(row.get("first_name").toString());
+            user.setLastName(row.get("last_name").toString());
+            user.setUserType(UserType.values()[(Integer.parseInt(row.get("user_type").toString()))]);
+        }
+
+        return user;
+
+    }
+
 }

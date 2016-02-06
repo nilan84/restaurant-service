@@ -23,12 +23,12 @@ $(document).ready(function() {
 
    </br>
    </br>
-  <img alt="Google Pie Chart" src=${lineUrl} />&nbsp;&nbsp;&nbsp;
-    <img alt="Google Pie Chart" src=${barUrl} />
+      <img alt="Google Pie Chart" src=${barPastMoveUrl} />&nbsp;&nbsp;&nbsp;
+      <img alt="Google Pie Chart" src=${barSlowMoveUrl} />
      </br>
      </br>
-    <img alt="Google Pie Chart" src=${barPastMoveUrl} />&nbsp;&nbsp;&nbsp;
-    <img alt="Google Pie Chart" src=${barSlowMoveUrl} />
+    <img alt="Google Pie Chart" src=${lineUrl} />&nbsp;&nbsp;&nbsp;
+        <img alt="Google Pie Chart" src=${barUrl} />
         </div>
         </div>
         </div>

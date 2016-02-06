@@ -1,6 +1,7 @@
 package lk.uoc.mit.service.webservice;
 
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
+import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.HelthInformation;
 import lk.uoc.mit.restaurant.mysql.model.Order;
@@ -53,7 +54,14 @@ public class FoodService {
         Order order=new Order();
         Customer regCustomer=customerDAOService.getCustomerByMAC(customer.getMacAddress());
         long customerId=regCustomer.getCustomerId();
-        long orderNo=orderFood.getOrderNo();
+        long orderNo =0;
+        try {
+            orderNo = Long.parseLong(session.getAttribute("orderno").toString());
+        }catch(Exception ex){
+            orderNo=0;
+            ex.printStackTrace();
+
+        }
         order.setCustomer(regCustomer);
         order.setDescription(orderFood.getDescription());
         if(customerId==0){
@@ -62,13 +70,15 @@ public class FoodService {
         }
         if(orderNo==0){
             orderNo=foodDAOService.addOrder(order);
+            session.setAttribute("orderno",orderNo);
             foodDAOService.changeOrderStatus(orderNo, OrderStatus.Confirm);
         }
         orderFood.setOrderNo(orderNo);
         foodDAOService.addOrderItem(orderFood);
 
-        session.setAttribute("cusId",customerId);
+        session.setAttribute("customer_Id",customerId);
         session.setAttribute("username",customer.getCustomerName());
+        session.setAttribute("usertype", UserType.Mobile);
         return orderNo;
 
     }

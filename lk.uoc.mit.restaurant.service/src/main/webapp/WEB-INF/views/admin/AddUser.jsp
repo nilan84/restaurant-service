@@ -22,11 +22,11 @@
                                    <form:errors path="username" cssClass="error"/>
                                  </div>  </div>
                                 <div class="form-group">
-                                   <form:label path="passward" class="control-label col-sm-2">User Passward</form:label>
+                                   <form:label path="password" class="control-label col-sm-2">User Password</form:label>
                                     <div class="col-sm-4">
-                                    <form:input path="passward" class="form-control"  />
+                                    <form:password  path="password" class="form-control"  />
                                     </div><div class="col-sm-4">
-                                    <form:errors path="passward" cssClass="error"/>
+                                    <form:errors path="password" cssClass="error"/>
                                 </div> </div>
 
                                 <div class="form-group">

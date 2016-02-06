@@ -8,8 +8,10 @@ $(function () {
             ui.helper.addClass("draggable");
         },
         stop: function (event, ui) {
+        if(false){
             ui.helper.removeClass("draggable");
             var image = this.src.split("/")[this.src.split("/").length - 1];
+
             if ($.ui.ddmanager.drop(ui.helper.data("draggable"), event)) {
                 alert(image + " dropped1.");
             $('#myModal').on('hide.bs.modal', function (e) {
@@ -20,6 +22,9 @@ $(function () {
             }
             else {
                 alert(image + " not dropped.");
+            }
+            }else{
+            alert(" not .");
             }
         }
     });
@@ -98,14 +103,53 @@ img
     width: 430px;
 }
 </style>
-<h5>Reservation For
-<input id="datepicker" readonly="true" value="${dateselect}"/>
-<select id="sel" onchange="" >
-<option value="0" selected>Morning</option>
-<option value="1">Day</option>
-<option value="2">Evening</option>
-<option value="3">Night</option>
-</select> </h5>
+<form:form method="POST" action="reservationsadd" class="form-horizontal" id="contactForm"  commandName="tableReservation">
+
+
+                                            <div class="form-group">
+                                             <form:label path="table" class="control-label col-sm-4">Select Date</form:label>
+
+                                                <div class="col-sm-4">
+                                                <input id="datepicker" readonly="true" value="${dateselect}"/>
+
+                                                </div>
+                                                </div>
+                                             <div class="form-group">
+                                             <form:label path="table" class="control-label col-sm-4">Select Table</form:label>
+                                              <div class="col-sm-4">
+                                                                                               <select id="sel" onchange="getComboA(this)" >
+                                                                                               <option value="0" selected>1</option>
+                                                                                               <option value="1">2</option>
+                                                                                               <option value="2">3</option>
+                                                                                               <option value="3">4</option>
+
+                                                                                              </select>
+                                              </div>
+                                             </div>
+
+                                              <div class="form-group">
+                                                 <form:label path="tableOrderTime" class="control-label col-sm-4">table Order Time</form:label>
+                                                 <div class="col-sm-4">
+                                                 <select id="sel" onchange="getComboA(this)" >
+                                                 <option value="0" selected>Morning</option>
+                                                 <option value="1">Day</option>
+                                                 <option value="2">Evening</option>
+                                                 <option value="3">Night</option>
+
+                                                </select>
+
+                                                 </div>
+                                                 </div>
+                                               <div class="form-group">
+                                                    <div class="col-sm-4">
+                                                    <input type="submit" value="Submit"  class="btn btn-default" />
+                                               </div> </div>
+                    </form:form>
+
+  </div>
+
+
+
 <h4>Available Table</h4>
 <div id="dvSource">
     <img alt="" src="resources/image/table1.jpg" />

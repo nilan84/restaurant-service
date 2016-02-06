@@ -118,4 +118,20 @@ public class CustomerDAOServiceImpl implements CustomerDAOService{
 
         return customer;
     }
+
+    public Customer getCustomerByemail(String email) {
+        String sql = "SELECT * FROM Customer where email='"+email+"'";
+        Customer customer = new Customer();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            customer.setCustomerId(Integer.parseInt(row.get("Customer_id").toString()));
+            customer.setCustomerEmail(row.get("email").toString());
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerMob(row.get("mob_no").toString());
+            customer.setMacAddress(row.get("mac_address").toString());
+        }
+
+        return customer;
+    }
 }

@@ -2,6 +2,7 @@ package lk.uoc.mit.service.controller;
 
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
 import lk.uoc.mit.restaurant.mysql.config.ReportConfig;
+import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Order;
 import lk.uoc.mit.restaurant.mysql.service.FoodDAOService;
 import lk.uoc.mit.restaurant.mysql.service.PaymetDAOService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -45,28 +47,43 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/getreport", method = RequestMethod.GET)
-    public String customerPage(Model model) {
-        reportDAOService.getReport();
-        return "admin/Report";
+    public String customerPage(Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
+            reportDAOService.getReport();
+            return "admin/Report";
+        }else{
+            return "admin/Unauthorized";
+            }
+
 
     }
 
     @RequestMapping(value = "/pastmovereport", method = RequestMethod.GET)
-    public String pastmove(Model model) {
+    public String pastmove(Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
         reportDAOService.getFastMoveReport();
         return "admin/Report";
+        }else{
+            return "admin/Unauthorized";
+        }
+
 
     }
 
     @RequestMapping(value = "/slowmovereport", method = RequestMethod.GET)
-    public String slowmove(Model model) {
+    public String slowmove(Model model,HttpSession httpSession) {
+        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
         reportDAOService.getSlowMoveReport();
         return "admin/Report";
-
+    }else{
+        return "admin/Unauthorized";
     }
 
+
+}
+
     @RequestMapping(value = "/guestbill", method = RequestMethod.GET)
-    public String gestBill(HttpServletResponse response,Model model,@RequestParam("id") Long orderId,@ModelAttribute("order")Order order) {
+    public String gestBill(HttpServletResponse response,Model model,@RequestParam("id") Long orderId,@ModelAttribute("order")Order order,HttpSession httpSession) {
 
  try {
      InputStream input = new FileInputStream(new File("/home/nilan/Software/Axiata/Project/restaurant-service/jrxml/report2.jrxml"));
@@ -88,11 +105,16 @@ public class ReportController {
      response.flushBuffer();
 
  }catch (Exception ex)     {ex.printStackTrace();}
-
-        List<Order> orderList=foodDAOService.getAllActiveOrder();
+    try {
+        List<Order> orderList = foodDAOService.getAllActiveOrder(httpSession);
         model.addAttribute("enumValues", OrderStatus.values());
         model.addAttribute("orderList", orderList);
         return "admin/ViewOrder";
+
+    }catch(Exception ex){
+
+        return "admin/NoDataFound";
+    }
 
     }
 
