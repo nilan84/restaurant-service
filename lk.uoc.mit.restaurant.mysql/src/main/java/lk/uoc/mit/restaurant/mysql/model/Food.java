@@ -1,6 +1,7 @@
 package lk.uoc.mit.restaurant.mysql.model;
 
 
+import lk.uoc.mit.restaurant.mysql.config.FoodType;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
@@ -15,6 +16,8 @@ public class Food implements Serializable {
 
     private FoodL2 foodL2;
 
+    private FoodType foodtype;
+
     @Size(min = 3, max = 255, message="Food Name must be at least 3 characters")
     private String foodName;
 
@@ -27,6 +30,14 @@ public class Food implements Serializable {
 
     private byte[] itemImage;
     MultipartFile file;
+
+    public FoodType getFoodtype() {
+        return foodtype;
+    }
+
+    public void setFoodtype(FoodType foodtype) {
+        this.foodtype = foodtype;
+    }
 
     public byte[] getItemImage() {
         return itemImage;

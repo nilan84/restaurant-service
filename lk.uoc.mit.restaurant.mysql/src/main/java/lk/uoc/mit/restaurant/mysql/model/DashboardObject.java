@@ -11,8 +11,8 @@ public class DashboardObject implements Serializable {
     private static final long serialVersionUID = -7788619177798333712L;
 
     private String foodType;
-    private int foodCount;
-    private int beverageCount;
+    private Double foodCount;
+    private Double beverageCount;
     private HashMap<String,String> fastMoveItem;
     private HashMap<String,String> showMoveItem;
     private HashMap<String,String> paymentType;
@@ -42,19 +42,19 @@ public class DashboardObject implements Serializable {
         this.showMoveItem = showMoveItem;
     }
 
-    public int getBeverageCount() {
+    public Double getBeverageCount() {
         return beverageCount;
     }
 
-    public void setBeverageCount(int beverageCount) {
+    public void setBeverageCount(Double beverageCount) {
         this.beverageCount = beverageCount;
     }
 
-    public int getFoodCount() {
+    public Double getFoodCount() {
         return foodCount;
     }
 
-    public void setFoodCount(int foodCount) {
+    public void setFoodCount(Double foodCount) {
         this.foodCount = foodCount;
     }
 

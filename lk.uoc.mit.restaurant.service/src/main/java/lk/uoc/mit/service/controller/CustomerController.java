@@ -28,48 +28,60 @@ public class CustomerController {
     CustomerDAOService customerDAOService;
 
     @RequestMapping(value = "/customer", method = RequestMethod.GET)
-    public String customerPage(Model model,HttpSession httpSession) {
-        if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")==UserType.Admin){
-        List<Customer> customerList=customerDAOService.getAllCustomer();
-        model.addAttribute("customers", customerList);
-        return "admin/Customer";}
-        else{
-        return "admin/Unauthorized";
+    public String customerPage(Model model, HttpSession httpSession) {
+        if (httpSession.getAttribute("usertype") != null && httpSession.getAttribute("usertype") == UserType.Admin) {
+            List<Customer> customerList = customerDAOService.getAllCustomer();
+            model.addAttribute("customers", customerList);
+            return "admin/Customer";
+        } else {
+            return "admin/Unauthorized";
         }
     }
 
     @RequestMapping(value = "/addcustomer", method = RequestMethod.POST)
-    public String addCustomer(@ModelAttribute("customer") @Valid Customer customer,BindingResult result,Model model,HttpSession httpSession) {
-        if(result.hasErrors()) {
-            return "admin/AddCustomer";
-        }else{
-        customerDAOService.addCustomer(customer);
-        List<Customer> customerList=customerDAOService.getAllCustomer();
-        model.addAttribute("customers", customerList);
-        return "admin/Customer";}
+    public String addCustomer(@ModelAttribute("customer") @Valid Customer customer, BindingResult result, Model model, HttpSession httpSession) {
+        if (httpSession.getAttribute("usertype") != null && httpSession.getAttribute("usertype") == UserType.Admin) {
+            if (result.hasErrors()) {
+                return "admin/AddCustomer";
+            } else {
+                customerDAOService.addCustomer(customer);
+                List<Customer> customerList = customerDAOService.getAllCustomer();
+                model.addAttribute("customers", customerList);
+                return "admin/Customer";
+            }
+        } else {
+            return "admin/Unauthorized";
+        }
+
     }
 
 
     @RequestMapping(value = "/editcustomer", method = RequestMethod.POST)
-    public String editCustomer(@ModelAttribute("customer") @Valid Customer customer,BindingResult result,Model model) {
-        if(result.hasErrors()) {
-            return "admin/EditCustomer";
-        }else{
-        customerDAOService.editCustomer(customer);
-        List<Customer> customerList=customerDAOService.getAllCustomer();
-        model.addAttribute("customers", customerList);
-        return "admin/Customer";}
+    public String editCustomer(@ModelAttribute("customer") @Valid Customer customer, BindingResult result, Model model, HttpSession httpSession) {
+        if (httpSession.getAttribute("usertype") != null && httpSession.getAttribute("usertype") == UserType.Admin) {
+            if (result.hasErrors()) {
+                return "admin/EditCustomer";
+            } else {
+                customerDAOService.editCustomer(customer);
+                List<Customer> customerList = customerDAOService.getAllCustomer();
+                model.addAttribute("customers", customerList);
+                return "admin/Customer";
+            }
+
+        } else {
+            return "admin/Unauthorized";
+        }
     }
 
     @RequestMapping(value = "/editcustomerview", method = RequestMethod.GET)
-    public String editCustomerView(@RequestParam("custid") Integer custid,@ModelAttribute("customer") @Valid Customer customer,Model model) {
-        Customer customerObject=customerDAOService.getCustomerById(custid);
+    public String editCustomerView(@RequestParam("custid") Integer custid, @ModelAttribute("customer") @Valid Customer customer, Model model) {
+        Customer customerObject = customerDAOService.getCustomerById(custid);
         model.addAttribute("customer", customerObject);
         return "admin/EditCustomer";
     }
 
     @RequestMapping(value = "/addcustomerview", method = RequestMethod.GET)
-    public String addCustomerView(@ModelAttribute("customer") @Valid Customer customer,Model model) {
+    public String addCustomerView(@ModelAttribute("customer") @Valid Customer customer, Model model) {
         return "admin/AddCustomer";
     }
 }

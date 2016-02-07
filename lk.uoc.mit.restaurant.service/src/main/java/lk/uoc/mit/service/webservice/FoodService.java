@@ -56,7 +56,7 @@ public class FoodService {
         long customerId=regCustomer.getCustomerId();
         long orderNo =0;
         try {
-            orderNo = Long.parseLong(session.getAttribute("orderno").toString());
+            orderNo =foodDAOService.getOrderByCusId(customerId).getOrderNo();
         }catch(Exception ex){
             orderNo=0;
             ex.printStackTrace();

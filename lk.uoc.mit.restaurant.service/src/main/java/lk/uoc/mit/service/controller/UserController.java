@@ -47,6 +47,7 @@ public class UserController {
     public String addUser(@ModelAttribute("user") @Valid User user,BindingResult result,Model model,HttpSession httpSession) {
         if(httpSession.getAttribute("usertype")!=null && httpSession.getAttribute("usertype")== UserType.Admin) {
         if(result.hasErrors()) {
+            model.addAttribute("enumValues", UserType.values());
             return "admin/AddUser";
         }else{
         userDAOService.addUser(user);

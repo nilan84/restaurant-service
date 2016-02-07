@@ -1,5 +1,6 @@
 package lk.uoc.mit.restaurant.mysql.service.impl;
 
+import lk.uoc.mit.restaurant.mysql.config.FoodType;
 import lk.uoc.mit.restaurant.mysql.config.OrderStatus;
 import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.*;
@@ -168,7 +169,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         jdbcTemplate.update(new PreparedStatementCreator(){
             @Override public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
                 PreparedStatement ps=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1,1);
+                ps.setInt(1,food.getFoodtype().ordinal());
                 ps.setString(2,food.getFoodName());
                 ps.setString(3,food.getFoodscanCode());
                 ps.setDouble(4,food.getFoodPrice());
@@ -190,7 +191,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         jdbcTemplate.update(new PreparedStatementCreator(){
             @Override public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
                 PreparedStatement ps=conn.prepareStatement(sql);
-                ps.setInt(1,1);
+                ps.setInt(1,food.getFoodtype().ordinal());
                 ps.setString(2,food.getFoodName());
                 ps.setString(3,food.getFoodscanCode());
                 ps.setDouble(4,food.getFoodPrice());
@@ -278,6 +279,14 @@ public class FoodDAOServiceImpl implements FoodDAOService {
             fooditem.setFoodPrice(Double.parseDouble(row.get("Food_Price").toString()));
             fooditem.setFoodDiscription(row.get("helth_discription").toString());
             fooditem.setFoodscanCode(row.get("FoodscanCode").toString());
+
+            int enamIntVal=Integer.parseInt(row.get("Food_type_id_l2").toString());
+            FoodType foodType=FoodType.NO_Type;;
+            if(enamIntVal==0){foodType=FoodType.NO_Type;}
+            else if(enamIntVal==1){foodType=FoodType.Food;}
+            else if(enamIntVal==2){foodType=FoodType.Beverage;}
+            fooditem.setFoodtype(foodType);
+
             ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
             byte[] bytes=null;
             try {
@@ -345,6 +354,29 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         }
 
         return order;
+
+    }
+
+    public Order getOrderByCusId(Long cusId){
+        Order order=new Order();
+        String sql = "SELECT * FROM Order_master,Customer where Order_master.customer_Id=Customer.customer_id and Order_master.customer_Id='"+cusId+"' and status=1 order by Order_id";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map row : rows) {
+            Customer customer=new Customer();
+            order.setOrderNo(Integer.parseInt(row.get("Order_id").toString()));
+            order.setDescription(row.get("Description").toString());
+            order.setOrderStatus(OrderStatus.values()[Integer.parseInt(row.get("status").toString())]);
+            customer.setCustomerName(row.get("cus_name").toString());
+            customer.setCustomerEmail(row.get("email").toString());
+            order.setCustomer(customer);
+            order.setOrderAmount(paymentDAOService.getOrderAmountByOderId(row.get("Order_id").toString()));
+
+        }
+
+        return order;
+
+
 
     }
 }

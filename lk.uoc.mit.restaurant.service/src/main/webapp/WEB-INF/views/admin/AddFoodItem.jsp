@@ -44,6 +44,18 @@
                                        <form:errors path="foodDiscription" cssClass="error" />
                                    </div> </div>
 
+                                    <div class="form-group">
+                                   <form:label path="foodtype" class="control-label col-sm-2">Food Type</form:label>
+                                   <div class="col-sm-4">
+                                   <form:select path="foodtype">
+                                   <c:forEach var="enum" items="${enumValues}">
+                                   <c:out value="${enum}"/>
+                                                                        <option value="${enum.value}"><c:out value="${enum.value}"/></option>
+                                                                        </c:forEach>
+                                                                     </form:select>
+                                                                     </div></div>
+
+
                                 <div class="form-group">
                                                 <div class="col-sm-offset-2 col-sm-10">
                                         <input type="submit" value="Submit"  class="btn btn-default" />

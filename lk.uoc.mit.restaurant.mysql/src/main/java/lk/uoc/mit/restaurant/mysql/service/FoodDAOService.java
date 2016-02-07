@@ -26,5 +26,6 @@ public interface FoodDAOService {
     public void deleteOrderItem(long orderNo,int foodNo);
     public List<Order> getAllOrderByDate(String Date);
     public Order getOrderById(Long orderId);
+    public Order getOrderByCusId(Long cusId);
 
 }

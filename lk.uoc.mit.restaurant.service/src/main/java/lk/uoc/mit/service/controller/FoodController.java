@@ -1,5 +1,6 @@
 package lk.uoc.mit.service.controller;
 
+import lk.uoc.mit.restaurant.mysql.config.FoodType;
 import lk.uoc.mit.restaurant.mysql.config.UserType;
 import lk.uoc.mit.restaurant.mysql.model.Customer;
 import lk.uoc.mit.restaurant.mysql.model.Food;
@@ -154,8 +155,9 @@ public class FoodController {
     }
 
     @RequestMapping(value = "/addfooditem", method = RequestMethod.POST)
-    public String addFoodItem(HttpServletRequest request, HttpServletResponse response,@ModelAttribute("food") @Valid Food food,BindingResult result,Map<String, Object> model) {
+    public String addFoodItem(Model model,HttpServletRequest request, HttpServletResponse response,@ModelAttribute("food") @Valid Food food,BindingResult result) {
         if(result.hasErrors()) {
+            model.addAttribute("enumValues", FoodType.values());
         return "admin/AddFoodItem";
         }else{
             try {
@@ -164,30 +166,31 @@ public class FoodController {
         foodDAOService.addFoodItem(food);
             List<Food> foodList;
             foodList=foodDAOService.getAllFood();
-            model.put("foodList", foodList);
+            model.addAttribute("foodList", foodList);
             return  "admin/AddFood";}
 
     }
 
 
     @RequestMapping(value = "/fooditemadd", method = RequestMethod.GET)
-    public String addFoodItem(HttpServletRequest request,
+    public String addFoodItem(Model model,HttpServletRequest request,
                                     HttpServletResponse response,@ModelAttribute("food") Food food) {
-
+        model.addAttribute("enumValues", FoodType.values());
         return "admin/AddFoodItem";
     }
 
     @RequestMapping(value = "/fooditemedit", method = RequestMethod.GET)
-    public String editFoodItem(Map<String, Object> model,@ModelAttribute("food") Food food,@ModelAttribute("foodId") int foodId) {
+    public String editFoodItem(Model model,@ModelAttribute("food") Food food,@ModelAttribute("foodId") int foodId) {
         Food foodItem=foodDAOService.getFoodById(foodId);
-
-        model.put("food", foodItem);
+        model.addAttribute("enumValues", FoodType.values());
+        model.addAttribute("food", foodItem);
         return "admin/EditFoodItem";
     }
 
     @RequestMapping(value = "/editfooditem", method = RequestMethod.POST)
-    public String editFoodItem(HttpServletRequest request, HttpServletResponse response,@ModelAttribute("food") @Valid Food food,BindingResult result,Map<String, Object> model) {
+    public String editFoodItem(Model model,HttpServletRequest request, HttpServletResponse response,@ModelAttribute("food") @Valid Food food,BindingResult result) {
         if(result.hasErrors()) {
+            model.addAttribute("enumValues", FoodType.values());
             return "admin/EditFoodItem";
         }else{
             try {
@@ -220,7 +223,7 @@ public class FoodController {
             foodDAOService.editFoodItem(food);
             List<Food> foodList;
             foodList=foodDAOService.getAllFood();
-            model.put("foodList", foodList);
+            model.addAttribute("foodList", foodList);
             return  "admin/AddFood";}
 
     }

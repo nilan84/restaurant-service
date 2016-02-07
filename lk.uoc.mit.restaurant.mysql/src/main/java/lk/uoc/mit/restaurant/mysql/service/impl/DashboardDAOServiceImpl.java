@@ -30,10 +30,10 @@ public DashboardObject getFoodAndBevCount(){
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
     for (Map row : rows) {
-        if(Integer.parseInt(row.get("Food_type_id_l2").toString())==1) {
-            dashboardObject.setBeverageCount(Integer.parseInt(row.get("foodCount").toString()));
+        if(Integer.parseInt(row.get("Food_type_id_l2").toString())==2) {
+            dashboardObject.setBeverageCount(Double.parseDouble(row.get("foodCount").toString()));
         }else {
-            dashboardObject.setFoodCount(Integer.parseInt(row.get("foodCount").toString()));
+            dashboardObject.setFoodCount(Double.parseDouble(row.get("foodCount").toString()));
         }
 
     }

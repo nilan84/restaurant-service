@@ -19,15 +19,21 @@ $(document).ready(function() {
  </br>
 
   <img alt="Google Pie Chart" src=${pieUrl} />&nbsp;&nbsp;&nbsp;
+  </br>
+     </br>
    <img alt="Google Pie Chart" src=${pie2Url} />
 
    </br>
    </br>
       <img alt="Google Pie Chart" src=${barPastMoveUrl} />&nbsp;&nbsp;&nbsp;
+      </br>
+           </br>
       <img alt="Google Pie Chart" src=${barSlowMoveUrl} />
      </br>
      </br>
     <img alt="Google Pie Chart" src=${lineUrl} />&nbsp;&nbsp;&nbsp;
+    </div>
+            </div>
         <img alt="Google Pie Chart" src=${barUrl} />
         </div>
         </div>

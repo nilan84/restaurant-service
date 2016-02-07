@@ -112,7 +112,9 @@ public class OrderController {
             foodDAOService.changeOrderStatus(order.getOrderNo(), order.getOrderStatus());
             JavaMail javaMail=new JavaMail();
             order=foodDAOService.getOrderById(order.getOrderNo());
-            javaMail.generateAndSendEmail(order.getCustomer().getCustomerEmail(),order.getCustomer().getCustomerName(),order.getOrderNo());
+            if(order.getOrderStatus()==OrderStatus.Delivering) {
+                javaMail.generateAndSendEmail(order.getCustomer().getCustomerEmail(), order.getCustomer().getCustomerName(), order.getOrderNo());
+            }
             List<Order> orderList = foodDAOService.getAllActiveOrder(httpSession);
             model.addAttribute("enumValues", OrderStatus.values());
             model.addAttribute("orderList", orderList);

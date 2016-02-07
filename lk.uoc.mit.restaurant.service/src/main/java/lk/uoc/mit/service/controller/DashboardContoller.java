@@ -27,12 +27,15 @@ public class DashboardContoller {
     public String customerPage(Model model, HttpSession httpSession) {
         if (httpSession.getAttribute("usertype") != null && httpSession.getAttribute("usertype") == UserType.Admin) {
             DashboardObject dashboardObject = dashboardDAOService.getFoodAndBevCount();
+            double sumCount=dashboardObject.getFoodCount()+dashboardObject.getBeverageCount();
+            int foodPrasent=(int) (double)((dashboardObject.getFoodCount()/sumCount)*100);
+            int bevPrasent=(int) (double)((dashboardObject.getBeverageCount()/sumCount)*100);
 
-            Slice s1 = Slice.newSlice(dashboardObject.getFoodCount(), Color.newColor("CACACA"), " Food", " Food Items-"+dashboardObject.getFoodCount());
-            Slice s2 = Slice.newSlice(dashboardObject.getBeverageCount(), Color.newColor("DF7417"), " Beverage", " Beverage Items-"+dashboardObject.getBeverageCount());
+            Slice s1 = Slice.newSlice((int) (double)dashboardObject.getFoodCount(), Color.newColor("CACACA"), " Food", " Food Items-"+foodPrasent+" %");
+            Slice s2 = Slice.newSlice((int) (double)dashboardObject.getBeverageCount(), Color.newColor("DF7417"), " Beverage", " Beverage Items-"+bevPrasent+" %");
             PieChart pieChart = GCharts.newPieChart(s1, s2);
             pieChart.setTitle("Food Beverage Sales ", Color.BLACK, 15);
-            pieChart.setSize(400, 200);
+            pieChart.setSize(600, 200);
             pieChart.setThreeD(true);
             model.addAttribute("pieUrl", pieChart.toURLString());
 
@@ -42,7 +45,7 @@ public class DashboardContoller {
             chart.addXAxisLabels(AxisLabelsFactory.newAxisLabels("2012", "2013", "2014", "2015"));
             chart.addYAxisLabels((AxisLabelsFactory.newAxisLabels("LKR0", "LKR100")));
             chart.setTitle("Quarterly Revenue|(in billions of LKR)", Color.BLACK, 15);
-            chart.setSize(400, 200);
+            chart.setSize(600, 200);
             model.addAttribute("barUrl", chart.toURLString());
 
 
@@ -58,15 +61,16 @@ public class DashboardContoller {
                 i++;
             }
 
-            BarChartPlot pastMove = Plots.newBarChartPlot(Data.newData(itemCount[0], itemCount[1], itemCount[2], itemCount[3], itemCount[4]), Color.newColor("951800"), "Q1" );
+            BarChartPlot pastMove = Plots.newBarChartPlot(Data.newData(itemCount[0], itemCount[1], itemCount[2], itemCount[3], itemCount[4]), Color.newColor("951800"), "No Of Item" );
 
             BarChart chartPastMove = GCharts.newBarChart(pastMove);
-            chartPastMove.addXAxisLabels(AxisLabelsFactory.newAxisLabels(itemName[0].substring(0,5),itemName[1].substring(0,5), itemName[2].substring(0,5),itemName[3].substring(0,5),itemName[4].substring(0,5)));
+            chartPastMove.addXAxisLabels(AxisLabelsFactory.newAxisLabels(itemName[0],itemName[1], itemName[2],itemName[3],itemName[4]));
             chartPastMove.addYAxisLabels((AxisLabelsFactory.newAxisLabels("0", "100")));
-
+            chartPastMove.setBarWidth(100);
             chartPastMove.setTitle("Top Five Past Move Item", Color.BLACK, 15);
-            chartPastMove.setSize(400, 200);
-            chartPastMove.setSpaceBetweenGroupsOfBars(10);
+            chartPastMove.setSize(800, 200);
+            chartPastMove.setSpaceBetweenGroupsOfBars(30);
+            chartPastMove.addTopAxisLabels(AxisLabelsFactory.newAxisLabels(itemCount[0].toString(), itemCount[1].toString(), itemCount[2].toString(), itemCount[3].toString(), itemCount[4].toString()));
 
             model.addAttribute("barPastMoveUrl", chartPastMove.toURLString());
 
@@ -81,12 +85,14 @@ public class DashboardContoller {
             }
 
 
-            BarChartPlot slowMove = Plots.newBarChartPlot(Data.newData(sitemCount[0], sitemCount[1], sitemCount[2], sitemCount[3], sitemCount[4]), Color.newColor("DF7417"), "Q1");
+            BarChartPlot slowMove = Plots.newBarChartPlot(Data.newData(sitemCount[0], sitemCount[1], sitemCount[2], sitemCount[3], sitemCount[4]), Color.newColor("DF7417"), "No of Item");
             BarChart chartSlowMove = GCharts.newBarChart(slowMove);
-            chartSlowMove.addXAxisLabels(AxisLabelsFactory.newAxisLabels(sitemName[0].substring(0,5),sitemName[1].substring(0,5), sitemName[2].substring(0,5),sitemName[3].substring(0,5),sitemName[4].substring(0,5)));
+            chartSlowMove.addXAxisLabels(AxisLabelsFactory.newAxisLabels(sitemName[0],sitemName[1], sitemName[2],sitemName[3],sitemName[4]));
             chartSlowMove.addYAxisLabels((AxisLabelsFactory.newAxisLabels("0", "100")));
             chartSlowMove.setTitle("Top Slow Move Item", Color.BLACK, 15);
-            chartSlowMove.setSize(400, 200);
+            chartSlowMove.setSize(800, 200);
+            chartSlowMove.setBarWidth(100);
+            chartSlowMove.setSpaceBetweenGroupsOfBars(30);
             model.addAttribute("barSlowMoveUrl", chartSlowMove.toURLString());
 
 
@@ -102,13 +108,13 @@ public class DashboardContoller {
             lineChart.setTitle("Last Week Revenue ", Color.BLACK, 15);
             model.addAttribute("lineUrl", lineChart.toURLString());
 
-            Slice s11 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("0").replace(".0","")), Color.newColor("CACACA"), "Cash", "Cash - "+dashboardObject.getPaymentType().get("0").replace(".0",""));
-            Slice s12 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("1").replace(".0", "")), Color.newColor("DF7417"), "Visa Card", "Visa Card - "+dashboardObject.getPaymentType().get("1").replace(".0",""));
-            Slice s13 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("3").replace(".0", "")), Color.newColor("951800"), "Mobile Cash", "Mobile Cash - "+dashboardObject.getPaymentType().get("3").replace(".0",""));
-            Slice s14 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("2").replace(".0", "")), Color.newColor("01A1DB"), "Master Card", "Master Card - "+dashboardObject.getPaymentType().get("2").replace(".0",""));
+            Slice s11 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("0").replace(".0","")), Color.newColor("CACACA"), "Cash", "Cash - LKR "+dashboardObject.getPaymentType().get("0").replace(".0",""));
+            Slice s12 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("1").replace(".0", "")), Color.newColor("DF7417"), "Visa Card", "Visa Card - LKR "+dashboardObject.getPaymentType().get("1").replace(".0",""));
+            Slice s13 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("3").replace(".0", "")), Color.newColor("951800"), "Mobile Cash", "Mobile Cash - LKR "+dashboardObject.getPaymentType().get("3").replace(".0",""));
+            Slice s14 = Slice.newSlice(Integer.parseInt(dashboardObject.getPaymentType().get("2").replace(".0", "")), Color.newColor("01A1DB"), "Master Card", "Master Card - LKR "+dashboardObject.getPaymentType().get("2").replace(".0",""));
             PieChart pieChart2 = GCharts.newPieChart(s11, s12, s13, s14);
             pieChart2.setTitle("Payment Method", Color.BLACK, 15);
-            pieChart2.setSize(400, 200);
+            pieChart2.setSize(600, 200);
             pieChart2.setThreeD(false);
             model.addAttribute("pie2Url", pieChart2.toURLString());
 
